@@ -10,10 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sejong2022CapstoneTeam8">
         <activity
-            android:name=".LoginActivity"
+            android:name=".SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

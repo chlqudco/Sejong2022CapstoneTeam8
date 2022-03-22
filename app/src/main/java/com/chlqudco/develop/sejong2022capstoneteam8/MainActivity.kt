@@ -2,10 +2,41 @@ package com.chlqudco.develop.sejong2022capstoneteam8
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
+    private val ChoiceFitnessFragment by lazy { ChoiceFitnessFragment() }
+    private val ChoiceVoiceFragment by lazy { ChoiceVoiceFragment() }
+    private val MyPageFragment by lazy { MyPageFragment() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+
+        initFragment()
+    }
+
+    private fun initFragment() = with(binding){
+        replaceFragment(ChoiceFitnessFragment)
+        MainBottomNavigationView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.fitness -> replaceFragment(ChoiceFitnessFragment)
+                R.id.voiceSelect -> replaceFragment(ChoiceVoiceFragment)
+                R.id.myPage -> replaceFragment(MyPageFragment)
+            }
+            true
+        }
+    }
+
+    private fun replaceFragment(fragment: Fragment) = with(binding){
+        supportFragmentManager.beginTransaction()
+            .apply {
+                replace(R.id.MainFragmentContainer, fragment)
+                commit()
+            }
     }
 }

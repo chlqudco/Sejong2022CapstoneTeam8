@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ChoiceFitnessFragment">
+
+    <TextView
+        android:id="@+id/ChoiceFitnessSetTextView"
+        android:text="Set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="100dp"/>
+
+    <NumberPicker
+        android:id="@+id/ChoiceFitnessSetNumberPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#D6D6D6"
+        app:layout_constraintTop_toBottomOf="@id/ChoiceFitnessSetTextView"
+        app:layout_constraintStart_toStartOf="@id/ChoiceFitnessSetTextView"
+        app:layout_constraintEnd_toEndOf="@id/ChoiceFitnessSetTextView"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/ChoiceFitnessCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="개수"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="100dp"/>
+
+    <NumberPicker
+        android:id="@+id/ChoiceFitnessCountNumberPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#D6D6D6"
+        app:layout_constraintTop_toBottomOf="@id/ChoiceFitnessCountTextView"
+        app:layout_constraintStart_toStartOf="@id/ChoiceFitnessCountTextView"
+        app:layout_constraintEnd_toEndOf="@id/ChoiceFitnessCountTextView"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="39dp"
+        android:text="  런지 "
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/button6"
+        app:layout_constraintStart_toStartOf="@+id/button6" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="29dp"
+        android:text="스쿼트"
+        android:textSize="40sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button4"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:text="푸시업"
+        android:textSize="40sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button7"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="53dp"
+        android:text="턱걸이"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.chlqudco.develop.sejong2022capstoneteam8.Fitness
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -26,6 +27,13 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
 
             binding.ChoiceFitnessCountNumberPicker.minValue = 1
             binding.ChoiceFitnessCountNumberPicker.maxValue = 30
+
+            binding.PushUpButton.setOnClickListener {
+                val intent = Intent(context,DoFitnessActivity::class.java)
+                startActivity(intent)
+            }
         }
+
+
     }
 }

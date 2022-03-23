@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.chlqudco.develop.sejong2022capstoneteam8">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sejong2022CapstoneTeam8">
+        <activity
+            android:name=".Fitness.AllFitnessEndActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Fitness.SetEndActivity"
+            android:exported="false" />
         <activity
             android:name=".Fitness.DoFitnessActivity"
             android:exported="false" />

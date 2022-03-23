@@ -49,37 +49,37 @@
         android:layout_marginTop="10dp" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/LungeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="39dp"
         android:text="  런지 "
         android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/button6"
-        app:layout_constraintStart_toStartOf="@+id/button6" />
+        app:layout_constraintBottom_toTopOf="@+id/PushUpButton"
+        app:layout_constraintStart_toStartOf="@+id/PushUpButton" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/SquatButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="29dp"
         android:text="스쿼트"
         android:textSize="40sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button4"
+        app:layout_constraintBaseline_toBaselineOf="@+id/LungeButton"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/PushUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:text="푸시업"
         android:textSize="40sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button7"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ChinningButton"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/ChinningButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="29dp"

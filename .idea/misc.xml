@@ -7,12 +7,15 @@
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/drawable-v24/ic_baseline_fitness_center_24.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/drawable-v24/ic_baseline_person_pin_24.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/drawable-v24/selector_menu_color.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/drawable/info_circle.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_do_fitness.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_main.xml" value="0.3140625" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_sign_up.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/fragment_choice_fitness.xml" value="0.33" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/fragment_choice_voice.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/fragment_my_page.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/item_my_page_history.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.36614583333333334" />
       </map>
     </option>

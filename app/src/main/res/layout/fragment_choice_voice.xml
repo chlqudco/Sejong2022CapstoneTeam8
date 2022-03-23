@@ -7,13 +7,51 @@
     tools:context=".ChoiceVoiceFragment">
 
     <TextView
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="음성 선택"
         android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <RadioGroup
+        android:id="@+id/choiceVoiceRadioGroup"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <RadioButton
+            android:id="@+id/noVoiceRadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="무음"
+            android:textAlignment="center"/>
+
+        <RadioButton
+            android:id="@+id/girl1RadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="여성 1" />
+
+        <RadioButton
+            android:id="@+id/girl2RadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="여성 2" />
+
+        <RadioButton
+            android:id="@+id/man1RadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="남성 1" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,9 @@
-package com.chlqudco.develop.sejong2022capstoneteam8
+package com.chlqudco.develop.sejong2022capstoneteam8.Fitness
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.chlqudco.develop.sejong2022capstoneteam8.R
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.FragmentChoiceFitnessBinding
 
 class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
@@ -12,8 +13,8 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val FragmentChoiceFitnessBinding = FragmentChoiceFitnessBinding.bind(view)
-        binding = FragmentChoiceFitnessBinding
+        val fragmentChoiceFitnessBinding = FragmentChoiceFitnessBinding.bind(view)
+        binding = fragmentChoiceFitnessBinding
 
         initViews()
     }

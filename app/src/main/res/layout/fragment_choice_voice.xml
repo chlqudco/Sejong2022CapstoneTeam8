@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ChoiceVoiceFragment">
 
     <TextView
+        android:id="@+id/ChoiceVoiceMainTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="음성 선택(개 허접함)"
+        android:text="음성 선택"
+        android:textColor="@color/black"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,39 +20,56 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.05" />
 
+    <TextView
+        android:id="@+id/ChoiceVoiceBaseLineTextView"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_margin="5dp"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ChoiceVoiceMainTextView" />
+
     <RadioGroup
         android:id="@+id/choiceVoiceRadioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ChoiceVoiceBaseLineTextView">
 
         <RadioButton
             android:id="@+id/noVoiceRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="무음"
-            android:textAlignment="center"/>
+            android:background="@drawable/sign_up_background"
+            android:layout_marginBottom="5dp"
+            android:text="무음" />
 
         <RadioButton
             android:id="@+id/girl1RadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/sign_up_background"
             android:text="여성 1" />
 
         <RadioButton
             android:id="@+id/girl2RadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/sign_up_background"
             android:text="여성 2" />
 
         <RadioButton
             android:id="@+id/man1RadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/sign_up_background"
             android:text="남성 1" />
     </RadioGroup>
 

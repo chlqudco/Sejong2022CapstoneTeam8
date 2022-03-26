@@ -21,6 +21,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="최수미님 반갑습니다"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/MyPageInfoImageView"
         app:layout_constraintTop_toTopOf="@id/MyPageInfoImageView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,8 +59,18 @@
         android:text="2022년 03월 23일 운동 기록"
         android:textColor="@color/black"
         android:textAlignment="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/MyPageBaseLineTextView"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/MyPageDateTextView"
+        android:background="@color/black"
+        android:layout_margin="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/MyPageRecyclerView"
@@ -67,7 +79,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/MyPageDateTextView"
+        app:layout_constraintTop_toBottomOf="@id/MyPageBaseLineTextView"
         android:layout_margin="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,93 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fitness.ChoiceFitnessFragment">
 
-    <TextView
-        android:id="@+id/ChoiceFitnessSetTextView"
-        android:text="Set"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ChoiceFitnessUpConstraintLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="100dp"/>
-
-    <NumberPicker
-        android:id="@+id/ChoiceFitnessSetNumberPicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#D6D6D6"
-        app:layout_constraintTop_toBottomOf="@id/ChoiceFitnessSetTextView"
-        app:layout_constraintStart_toStartOf="@id/ChoiceFitnessSetTextView"
-        app:layout_constraintEnd_toEndOf="@id/ChoiceFitnessSetTextView"
-        android:layout_marginTop="10dp" />
-
-    <TextView
-        android:id="@+id/ChoiceFitnessCountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="개수"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/choice_fitness_up_layout_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="100dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <NumberPicker
-        android:id="@+id/ChoiceFitnessCountNumberPicker"
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="운동량 선택"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <NumberPicker
+            android:id="@+id/ChoiceFitnessSetNumberPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:text="SET"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/ChoiceFitnessSetNumberPicker"
+            app:layout_constraintStart_toStartOf="@id/ChoiceFitnessSetNumberPicker"
+            app:layout_constraintTop_toBottomOf="@id/ChoiceFitnessSetNumberPicker" />
+
+        <NumberPicker
+            android:id="@+id/ChoiceFitnessTimeInterValNumberPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="40dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:text="휴식 시간"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/ChoiceFitnessTimeInterValNumberPicker"
+            app:layout_constraintStart_toStartOf="@id/ChoiceFitnessTimeInterValNumberPicker"
+            app:layout_constraintTop_toBottomOf="@id/ChoiceFitnessTimeInterValNumberPicker" />
+
+
+        <NumberPicker
+            android:id="@+id/ChoiceFitnessCountNumberPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:text="개수"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/ChoiceFitnessCountNumberPicker"
+            app:layout_constraintStart_toStartOf="@id/ChoiceFitnessCountNumberPicker"
+            app:layout_constraintTop_toBottomOf="@id/ChoiceFitnessCountNumberPicker" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ChoiceFitnessDownConstraintLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#D6D6D6"
-        app:layout_constraintTop_toBottomOf="@id/ChoiceFitnessCountTextView"
-        app:layout_constraintStart_toStartOf="@id/ChoiceFitnessCountTextView"
-        app:layout_constraintEnd_toEndOf="@id/ChoiceFitnessCountTextView"
-        android:layout_marginTop="10dp" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/choice_fitness_up_layout_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ChoiceFitnessUpConstraintLayout">
+
+        <TextView
+            android:id="@+id/ChoiceFitnessSelectTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="운동 선택"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <RadioGroup
+            android:id="@+id/choiceVoiceRadioGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ChoiceFitnessSelectTextView">
+
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="팔굽혀펴기" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="턱걸이" />
+
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="스쿼트" />
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="런지" />
+
+
+        </RadioGroup>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/LungeButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/ChoiceFitnessStartButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="39dp"
-        android:text="  런지 "
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/PushUpButton"
-        app:layout_constraintStart_toStartOf="@+id/PushUpButton" />
-
-    <Button
-        android:id="@+id/SquatButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="29dp"
-        android:text="스쿼트"
-        android:textSize="40sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/LungeButton"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/PushUpButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:text="푸시업"
-        android:textSize="40sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ChinningButton"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/ChinningButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="29dp"
-        android:layout_marginBottom="53dp"
-        android:text="턱걸이"
-        android:textSize="40sp"
+        android:layout_margin="20dp"
+        android:text="운동 시작"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

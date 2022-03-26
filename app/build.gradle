@@ -46,6 +46,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
+    //그 뭐냐 세트완료 프로그래스바
+    implementation 'com.github.imcloudfloating:ProgressBar:1.1'
 
     //카메라 테스트
     def camerax_version = "1.1.0-beta02"

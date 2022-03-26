@@ -28,10 +28,14 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
             binding.ChoiceFitnessCountNumberPicker.minValue = 1
             binding.ChoiceFitnessCountNumberPicker.maxValue = 30
 
-            binding.PushUpButton.setOnClickListener {
+            binding.ChoiceFitnessTimeInterValNumberPicker.minValue = 10
+            binding.ChoiceFitnessTimeInterValNumberPicker.maxValue = 30
+
+            binding.ChoiceFitnessStartButton.setOnClickListener {
                 val intent = Intent(context,DoFitnessActivity::class.java)
                 startActivity(intent)
             }
+
         }
 
 

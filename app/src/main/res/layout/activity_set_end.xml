@@ -47,7 +47,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:progressBackColor="#e0e0e0"
         app:progressColor="#80cc33"
-        app:progress="40"
+        app:maxProgress="30"
+        app:progress="20"
         app:progressWidth="16dp" />
 
 

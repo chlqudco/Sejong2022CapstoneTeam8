@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/hongSuminColor"
     tools:context=".LoginActivity">
 
     <Button
@@ -15,34 +16,44 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:padding="30dp"
         android:id="@+id/LoginMainImageView"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="310dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginTop="100dp"
-        android:src="@drawable/mainloginicon"
+        android:background="@drawable/login_circle_background"
+        android:src="@drawable/strong_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/LoginMainTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="AI 헬스 카운터"
-        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:text="AI Fitness Counter"
+        android:fontFamily="@font/neodgm"
+        android:textColor="@color/white"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/LoginMainImageView" />
+        app:layout_constraintTop_toBottomOf="@id/LoginMainImageView"/>
 
     <EditText
         android:id="@+id/LogInIdEditText"
         android:layout_width="300dp"
+        android:padding="10dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:drawableStart="@drawable/ic_id"
+        android:layout_marginTop="500dp"
+        android:drawableStart="@drawable/ic_id2"
+        android:textColor="@color/white"
         android:hint="E-Mail"
+        android:textColorHint="@color/white"
+        android:background="@drawable/sign_up_background2"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@id/LogInPasswordEditText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,51 +65,49 @@
         android:id="@+id/LogInPasswordEditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_password"
+        android:drawableStart="@drawable/ic_baseline_lock_open_24"
         android:hint="Password"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:inputType="textPassword"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/sign_up_background2"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/LogInIdEditText"
         tools:ignore="Autofill,HardcodedText,TextFields" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="LOG-IN"
+        android:textColor="@color/white"
+        android:background="@drawable/sign_up_background3"
         app:layout_constraintEnd_toEndOf="@id/LogInPasswordEditText"
         app:layout_constraintStart_toStartOf="@id/LogInPasswordEditText"
         app:layout_constraintTop_toBottomOf="@id/LogInPasswordEditText" />
 
-    <TextView
-        android:id="@+id/LoginOrTextView"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/LogInSignUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="or"
-        android:textSize="20sp"
+        android:text="@string/underlineLogIn"
+        android:textColor="@color/white"
+        android:background="@null"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
         app:layout_constraintEnd_toEndOf="@id/loginButton"
-        app:layout_constraintStart_toStartOf="@id/loginButton"
-        app:layout_constraintTop_toBottomOf="@id/loginButton" />
-
-    <Button
-        android:id="@+id/LogInSignUpButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="회원 가입"
-        app:layout_constraintEnd_toEndOf="@id/loginButton"
-        app:layout_constraintStart_toStartOf="@id/loginButton"
-        app:layout_constraintTop_toBottomOf="@id/LoginOrTextView"
         tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="세종대학교 캡스톤디자인 준혁없는 준혁팀"
+        android:textColor="#D3D3D3"
+        android:text="2022년 세종대학교 캡스톤디자인 준혁없는 준혁팀"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

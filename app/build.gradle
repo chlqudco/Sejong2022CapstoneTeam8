@@ -49,6 +49,9 @@ dependencies {
     //그 뭐냐 세트완료 프로그래스바
     implementation 'com.github.imcloudfloating:ProgressBar:1.1'
 
+    //그 뭐냐 pose detection 노 정확 버젼
+    implementation 'com.google.mlkit:pose-detection:18.0.0-beta2'
+
     //카메라 테스트
     def camerax_version = "1.1.0-beta02"
     implementation "androidx.camera:camera-core:1.1.0-beta02"

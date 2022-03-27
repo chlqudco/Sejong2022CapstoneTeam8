@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -18,6 +19,9 @@ import androidx.camera.video.VideoCapture
 import androidx.core.content.ContextCompat
 import com.chlqudco.develop.sejong2022capstoneteam8.R
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivityDoFitnessBinding
+import com.google.mlkit.vision.pose.Pose
+import com.google.mlkit.vision.pose.PoseDetection
+import com.google.mlkit.vision.pose.defaults.PoseDetectorOptions
 import java.util.concurrent.ExecutorService
 
 
@@ -25,6 +29,13 @@ class DoFitnessActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityDoFitnessBinding.inflate(layoutInflater) }
     private val sharedPreferences by lazy { getSharedPreferences("setting", Context.MODE_PRIVATE) }
+
+    //ml kit 재료
+    private val options by lazy { PoseDetectorOptions.Builder().setDetectorMode(PoseDetectorOptions.STREAM_MODE).build() }
+    private val poseDetector by lazy { PoseDetection.getClient(options) }
+    private val onPoseDetected: (pose: Pose) -> Unit = { pose -> }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

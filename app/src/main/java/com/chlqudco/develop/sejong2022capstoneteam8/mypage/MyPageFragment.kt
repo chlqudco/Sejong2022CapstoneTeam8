@@ -1,5 +1,7 @@
 package com.chlqudco.develop.sejong2022capstoneteam8.mypage
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.View
@@ -22,6 +24,7 @@ class MyPageFragment : Fragment(R.layout.fragment_my_page) {
         initViews()
     }
 
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun initViews(){
 
         //임시 데이터
@@ -42,7 +45,7 @@ class MyPageFragment : Fragment(R.layout.fragment_my_page) {
             val date = Date(now)
             val sdf = SimpleDateFormat("yyyy년 MM월 dd일")
             val getTime = sdf.format(date)
-            binding.MyPageDateTextView.text = "${getTime} 운동 기록"
+            binding.MyPageDateTextView.text = "$getTime 운동 기록"
 
             //원하는 날짜 클릭 이벤트 발생
             binding.MyPageCalendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->

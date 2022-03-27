@@ -1,6 +1,8 @@
 package com.chlqudco.develop.sejong2022capstoneteam8.Fitness
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +22,9 @@ import java.util.concurrent.ExecutorService
 
 
 class DoFitnessActivity : AppCompatActivity() {
+
     private val binding by lazy { ActivityDoFitnessBinding.inflate(layoutInflater) }
+    private val sharedPreferences by lazy { getSharedPreferences("setting", Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,7 @@ class DoFitnessActivity : AppCompatActivity() {
         initViews()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initViews(){
         //카메라 권한 확인 후 프래그먼트 생성
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -36,6 +41,8 @@ class DoFitnessActivity : AppCompatActivity() {
         } else {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), 1111)
         }
+
+        binding.DoFitnessMainTextView.text = sharedPreferences.getString("fitnessChoice","null")+" 측정 중"
 
         binding.DoFitnessSetEndButton.setOnClickListener {
             val intent = Intent(this, SetEndActivity::class.java)

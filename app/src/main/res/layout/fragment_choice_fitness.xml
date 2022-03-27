@@ -144,22 +144,26 @@
 
 
             <RadioButton
+                android:id="@+id/fitness1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="팔굽혀펴기" />
 
             <RadioButton
+                android:id="@+id/fitness2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="턱걸이" />
 
 
             <RadioButton
+                android:id="@+id/fitness3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="스쿼트" />
 
             <RadioButton
+                android:id="@+id/fitness4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="런지" />

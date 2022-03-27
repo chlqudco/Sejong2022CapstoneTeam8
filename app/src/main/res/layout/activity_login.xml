@@ -37,21 +37,21 @@
         app:layout_constraintTop_toBottomOf="@id/LoginMainImageView" />
 
     <EditText
-        android:id="@+id/idEditText"
+        android:id="@+id/LogInIdEditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="300dp"
         android:drawableStart="@drawable/ic_id"
         android:hint="E-Mail"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@id/passwordEditText"
+        app:layout_constraintBottom_toTopOf="@id/LogInPasswordEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="Autofill,HardcodedText" />
 
     <EditText
-        android:id="@+id/passwordEditText"
+        android:id="@+id/LogInPasswordEditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_password"
@@ -60,7 +60,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/idEditText"
+        app:layout_constraintTop_toBottomOf="@id/LogInIdEditText"
         tools:ignore="Autofill,HardcodedText,TextFields" />
 
     <Button
@@ -69,9 +69,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="LOG-IN"
-        app:layout_constraintEnd_toEndOf="@id/passwordEditText"
-        app:layout_constraintStart_toStartOf="@id/passwordEditText"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
+        app:layout_constraintEnd_toEndOf="@id/LogInPasswordEditText"
+        app:layout_constraintStart_toStartOf="@id/LogInPasswordEditText"
+        app:layout_constraintTop_toBottomOf="@id/LogInPasswordEditText" />
 
     <TextView
         android:id="@+id/LoginOrTextView"

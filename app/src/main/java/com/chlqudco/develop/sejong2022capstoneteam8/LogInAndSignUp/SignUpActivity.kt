@@ -1,4 +1,4 @@
-package com.chlqudco.develop.sejong2022capstoneteam8
+package com.chlqudco.develop.sejong2022capstoneteam8.LogInAndSignUp
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

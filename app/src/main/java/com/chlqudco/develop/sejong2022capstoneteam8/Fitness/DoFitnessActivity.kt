@@ -18,6 +18,8 @@ import androidx.camera.video.Recording
 import androidx.camera.video.VideoCapture
 import androidx.core.content.ContextCompat
 import com.chlqudco.develop.sejong2022capstoneteam8.R
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_CHOICE
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SETTING
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivityDoFitnessBinding
 import com.google.mlkit.vision.pose.Pose
 import com.google.mlkit.vision.pose.PoseDetection
@@ -28,7 +30,7 @@ import java.util.concurrent.ExecutorService
 class DoFitnessActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityDoFitnessBinding.inflate(layoutInflater) }
-    private val sharedPreferences by lazy { getSharedPreferences("setting", Context.MODE_PRIVATE) }
+    private val sharedPreferences by lazy { getSharedPreferences(SETTING, Context.MODE_PRIVATE) }
 
     //ml kit 재료
     private val options by lazy { PoseDetectorOptions.Builder().setDetectorMode(PoseDetectorOptions.STREAM_MODE).build() }
@@ -53,7 +55,7 @@ class DoFitnessActivity : AppCompatActivity() {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), 1111)
         }
 
-        binding.DoFitnessMainTextView.text = sharedPreferences.getString("fitnessChoice","null")+" 측정 중"
+        binding.DoFitnessMainTextView.text = sharedPreferences.getString(FITNESS_CHOICE,"null")+" 측정 중"
 
         binding.DoFitnessSetEndButton.setOnClickListener {
             val intent = Intent(this, SetEndActivity::class.java)

@@ -1,9 +1,10 @@
-package com.chlqudco.develop.sejong2022capstoneteam8
+package com.chlqudco.develop.sejong2022capstoneteam8.LogInAndSignUp
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.chlqudco.develop.sejong2022capstoneteam8.MainActivity
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {

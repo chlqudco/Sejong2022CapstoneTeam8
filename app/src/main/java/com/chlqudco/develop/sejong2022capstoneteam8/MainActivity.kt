@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.chlqudco.develop.sejong2022capstoneteam8.Fitness.ChoiceFitnessFragment
+import com.chlqudco.develop.sejong2022capstoneteam8.Voice.ChoiceVoiceFragment
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivityMainBinding
 import com.chlqudco.develop.sejong2022capstoneteam8.mypage.MyPageFragment
 

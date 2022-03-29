@@ -9,6 +9,11 @@ import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import com.chlqudco.develop.sejong2022capstoneteam8.R
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_CHOICE
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_COUNT
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_INTERVAL
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_REMAIN_SET
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.FragmentChoiceFitnessBinding
 
 class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
@@ -78,28 +83,28 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
         val sharedPreferences = context?.getSharedPreferences("setting", Context.MODE_PRIVATE)
         sharedPreferences?.edit {
             binding?.let { binding ->
-                putInt("set", binding.ChoiceFitnessSetNumberPicker.value)
-                putInt("remainSet", binding.ChoiceFitnessSetNumberPicker.value)
-                putInt("interval", binding.ChoiceFitnessTimeInterValNumberPicker.value)
-                putInt("count", binding.ChoiceFitnessCountNumberPicker.value)
+                putInt(FITNESS_SET, binding.ChoiceFitnessSetNumberPicker.value)
+                putInt(FITNESS_REMAIN_SET, binding.ChoiceFitnessSetNumberPicker.value)
+                putInt(FITNESS_INTERVAL, binding.ChoiceFitnessTimeInterValNumberPicker.value)
+                putInt(FITNESS_COUNT, binding.ChoiceFitnessCountNumberPicker.value)
 
 
                 //무슨 운동 선택했는지 저장
                 when (binding.choiceVoiceRadioGroup.checkedRadioButtonId) {
                     R.id.fitness1 -> {
-                        putString("fitnessChoice","팔굽혀펴기")
+                        putString(FITNESS_CHOICE,"팔굽혀펴기")
                     }
                     R.id.fitness2 -> {
-                        putString("fitnessChoice","턱걸이")
+                        putString(FITNESS_CHOICE,"턱걸이")
                     }
                     R.id.fitness3 -> {
-                        putString("fitnessChoice","스쿼트")
+                        putString(FITNESS_CHOICE,"스쿼트")
                     }
                     R.id.fitness4 -> {
-                        putString("fitnessChoice","런지")
+                        putString(FITNESS_CHOICE,"런지")
                     }
                     else -> {
-                        putString("fitnessChoice","null")
+                        putString(FITNESS_CHOICE,"null")
                     }
                 }
             }

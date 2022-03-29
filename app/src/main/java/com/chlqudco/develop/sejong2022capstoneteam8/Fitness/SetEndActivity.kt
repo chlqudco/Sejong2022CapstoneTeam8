@@ -7,12 +7,16 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.core.content.edit
 import com.chlqudco.develop.sejong2022capstoneteam8.R
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_INTERVAL
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_REMAIN_SET
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_SET
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SETTING
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivitySetEndBinding
 
 class SetEndActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySetEndBinding.inflate(layoutInflater) }
-    private val sharedPreferences by lazy { getSharedPreferences("setting", Context.MODE_PRIVATE) }
+    private val sharedPreferences by lazy { getSharedPreferences(SETTING, Context.MODE_PRIVATE) }
 
     //휴식시간 재보쟈
     private var currentCountDownTimer: CountDownTimer? = null
@@ -27,9 +31,9 @@ class SetEndActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun initViews() = with(binding) {
 
-        val remainSet = sharedPreferences.getInt("remainSet", -1)
-        val totalSet = sharedPreferences.getInt("set", -1)
-        val timeInterval = sharedPreferences.getInt("interval", -1)
+        val remainSet = sharedPreferences.getInt(FITNESS_REMAIN_SET, -1)
+        val totalSet = sharedPreferences.getInt(FITNESS_SET, -1)
+        val timeInterval = sharedPreferences.getInt(FITNESS_INTERVAL, -1)
 
         SetEndRemainSetTextView.text = "남은 Set : ${remainSet - 1}, 총 Set : $totalSet"
         SetEndProgressbar.text = "$timeInterval 초"
@@ -38,7 +42,7 @@ class SetEndActivity : AppCompatActivity() {
         startCountDown()
 
         sharedPreferences.edit {
-            putInt("remainSet", remainSet - 1)
+            putInt(FITNESS_REMAIN_SET, remainSet - 1)
             commit()
         }
 
@@ -67,7 +71,7 @@ class SetEndActivity : AppCompatActivity() {
 
     private fun startCountDown() = with(binding) {
         //카운트 다운 타이머 받아온뒤 시작
-        currentCountDownTimer = createCountDownTimer((sharedPreferences.getInt("interval", -1)*1000).toLong())
+        currentCountDownTimer = createCountDownTimer((sharedPreferences.getInt(FITNESS_INTERVAL, -1)*1000).toLong())
         currentCountDownTimer?.start()
 
     }

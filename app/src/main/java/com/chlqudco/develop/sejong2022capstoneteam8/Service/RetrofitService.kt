@@ -18,11 +18,11 @@ interface RetrofitService {
     ): Call<SuccessEntity>
 
 
-    @POST("user/login/")
+    @POST("/login.php")
     @FormUrlEncoded
     fun login(
-        @Field("username") username: String,
-        @Field("password") password: String
+        @Field("id") id: String,
+        @Field("pw") pw: String
     ): Call<LoginUserEntity>
 
     @GET("post/all/")

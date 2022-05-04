@@ -26,10 +26,10 @@
             android:name=".LogInAndSignUp.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LogInAndSignUp.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".LogInAndSignUp.LoginActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,9 +1,12 @@
 package com.chlqudco.develop.sejong2022capstoneteam8
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.chlqudco.develop.sejong2022capstoneteam8.Fitness.ChoiceFitnessFragment
+import com.chlqudco.develop.sejong2022capstoneteam8.LogInAndSignUp.LoginActivity
+import com.chlqudco.develop.sejong2022capstoneteam8.LogInAndSignUp.SignUpActivity
 import com.chlqudco.develop.sejong2022capstoneteam8.Voice.ChoiceVoiceFragment
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivityMainBinding
 import com.chlqudco.develop.sejong2022capstoneteam8.mypage.MyPageFragment
@@ -21,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initFragment()
+
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun initFragment() = with(binding){

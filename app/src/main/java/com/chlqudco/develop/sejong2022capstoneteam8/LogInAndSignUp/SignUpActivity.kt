@@ -1,12 +1,16 @@
 package com.chlqudco.develop.sejong2022capstoneteam8.LogInAndSignUp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.edit
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.RetrofitService
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.SuccessEntity
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SIGN_UP_ID
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SIGN_UP_PASSWORD
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivitySignUpBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SignUpActivity : AppCompatActivity() {
     val binding by lazy { ActivitySignUpBinding.inflate(layoutInflater) }
+    private val sharedPreferences by lazy { this.getSharedPreferences("setting", Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +86,14 @@ class SignUpActivity : AppCompatActivity() {
                                             Toast.makeText(this@SignUpActivity, "회원가입에 실패했습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
                                         } else {
                                             Toast.makeText(this@SignUpActivity, "회원가입에 성공 했습니다.", Toast.LENGTH_SHORT).show()
+
+                                            //정보 저장
+                                            sharedPreferences.edit {
+                                                putString(SIGN_UP_ID,userId)
+                                                putString(SIGN_UP_PASSWORD,password)
+                                                commit()
+                                            }
+
                                             //로그인 화면으로 컴백
                                             finish()
                                         }

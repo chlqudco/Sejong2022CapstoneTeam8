@@ -25,14 +25,19 @@ interface RetrofitService {
         @Field("pw") pw: String
     ): Call<LoginUserEntity>
 
-    @GET("post/all/")
-    fun getAllPosts(): Call<SuccessEntity>
+    @POST("/history_show.php")
+    @FormUrlEncoded
+    fun getSelectedDateHistory(
+        @Field("token") token: String,
+        @Field("date") date: String
+    ): Call<SelectedDateHistoryEntity>
 
+    /*
     @Multipart
     @POST("post/create/")
     fun uploadPost(
         @Part image : MultipartBody.Part,
         @Part ("content")requestBody : RequestBody
     ):Call<SuccessEntity>
-
+    */
 }

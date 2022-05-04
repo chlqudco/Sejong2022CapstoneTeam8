@@ -11,6 +11,8 @@ import com.chlqudco.develop.sejong2022capstoneteam8.Service.LoginUserEntity
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.RetrofitService
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.SuccessEntity
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SIGN_UP_ID
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SIGN_UP_PASSWORD
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivityLoginBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class LoginActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
+    private val sharedPreferences by lazy { this.getSharedPreferences("setting", Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +32,17 @@ class LoginActivity : AppCompatActivity() {
         initViews()
     }
 
+    override fun onResume() = with(binding)  {
+        super.onResume()
+        //저장되어 있으면 정보 가져오기
+        LogInIdEditText.setText(sharedPreferences.getString(SIGN_UP_ID,""))
+        LogInPasswordEditText.setText(sharedPreferences.getString(SIGN_UP_PASSWORD,""))
+    }
+
     private fun initViews() = with(binding) {
+
+
+
         LogInSignUpButton.setOnClickListener {
             val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
             startActivity(intent)
@@ -59,6 +72,13 @@ class LoginActivity : AppCompatActivity() {
             val userId = LogInIdEditText.text.toString()
             val password = LogInPasswordEditText.text.toString()
 
+            //저장된 정보 싹다 지우기
+            sharedPreferences.edit {
+                putString(SIGN_UP_ID,"")
+                putString(SIGN_UP_PASSWORD,"")
+                commit()
+            }
+
             //로그인 기능
             //레트로핏 객체 생성
             val retrofit = Retrofit.Builder()
@@ -74,17 +94,17 @@ class LoginActivity : AppCompatActivity() {
                                 response.body()?.let {
                                     //실패한 경우 1
                                     if (response.isSuccessful.not()) {
-                                        Toast.makeText(this@LoginActivity, "로그인에 실패했습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this@LoginActivity, "로그인에 실패했습니다1. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
                                     } else {
                                         //성공 실패 여부 판단
 
                                         //실패한 경우 2
                                         if (it.isSuccessed.not()) {
-                                            Toast.makeText(this@LoginActivity, "로그인에 실패했습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this@LoginActivity, "로그인에 실패했습니다2. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
                                         }
                                         //성공
                                         else {
-                                            Toast.makeText(this@LoginActivity, "로그인에 성공 했습니다.${it.token}", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this@LoginActivity, "로그인에 성공 했습니다.", Toast.LENGTH_SHORT).show()
                                             //셰어드 프리퍼런스에 정보 저장
                                             val sharedPreferences = this@LoginActivity.getSharedPreferences("setting", Context.MODE_PRIVATE)
                                             sharedPreferences?.edit {
@@ -99,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
                             }
                             // 실패한 경우 2
                             override fun onFailure(call: Call<LoginUserEntity>, t: Throwable) {
-                                Toast.makeText(this@LoginActivity, "로그인에 실패했습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@LoginActivity, "로그인에 실패했습니다3. 다시 시도해주세요", Toast.LENGTH_SHORT).show()
                             }
                         })
                 }

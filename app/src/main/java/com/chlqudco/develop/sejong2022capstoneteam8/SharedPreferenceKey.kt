@@ -11,5 +11,7 @@ class SharedPreferenceKey {
         const val FITNESS_REMAIN_SET = "fitnessRemainSet"
         const val TOKEN = "token"
         const val USER_NAME = "username"
+        const val SIGN_UP_ID = "signUpId"
+        const val SIGN_UP_PASSWORD = "signUpPassword"
     }
 }

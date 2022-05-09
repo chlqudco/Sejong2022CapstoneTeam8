@@ -32,6 +32,21 @@ interface RetrofitService {
         @Field("date") date: String
     ): Call<SelectedDateHistoryEntity>
 
+    @POST("/history_insert.php")
+    @FormUrlEncoded
+    fun sendHistory(
+        @Field("token") token: String,
+        @Field("date") date: String,
+        @Field("pushUpSet") pushUpSet: Int,
+        @Field("pushUpCount") pushUpCount: Int,
+        @Field("pullUpSet") pullUpSet: Int,
+        @Field("pullUpCount") pullUpCount: Int,
+        @Field("squatSet") squatSet: Int,
+        @Field("squatCount") squatCount: Int,
+        @Field("lungeSet") lungeSet: Int,
+        @Field("lungeCount") lungeCount: Int,
+    ): Call<SendHistoryEntity>
+
     /*
     @Multipart
     @POST("post/create/")

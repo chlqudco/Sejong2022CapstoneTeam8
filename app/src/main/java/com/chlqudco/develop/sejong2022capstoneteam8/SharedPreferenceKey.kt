@@ -8,7 +8,7 @@ class SharedPreferenceKey {
         const val FITNESS_SET = "fitnessSet"
         const val FITNESS_COUNT = "fitnessCount"
         const val FITNESS_INTERVAL = "fitnessInterval"
-        const val FITNESS_REMAIN_SET = "fitnessRemainSet"
+        const val FITNESS_CURRENT_SET = "fitnessCurrentSet"
         const val TOKEN = "token"
         const val USER_NAME = "username"
         const val SIGN_UP_ID = "signUpId"

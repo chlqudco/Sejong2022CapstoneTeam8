@@ -21,13 +21,17 @@
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_main.xml" value="0.3140625" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_set_end.xml" value="0.22" />
+        <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_settings.xml" value="0.21907894736842104" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
+        <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/activity_vision_camerax_live_preview.xml" value="0.21907894736842104" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/fragment_camera.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/fragment_choice_fitness.xml" value="0.25" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/fragment_choice_voice.xml" value="0.25" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/fragment_my_page.xml" value="0.25" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/item_my_page_history.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/layout/settings_style.xml" value="0.21907894736842104" />
         <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/home/AndroidStudioProjects/Sejong2022CapstoneTeam8/app/src/main/res/xml/preference_live_preview_quickstart.xml" value="0.21907894736842104" />
       </map>
     </option>
   </component>

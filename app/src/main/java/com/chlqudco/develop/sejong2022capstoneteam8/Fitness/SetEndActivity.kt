@@ -6,9 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.core.content.edit
-import com.chlqudco.develop.sejong2022capstoneteam8.R
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_CURRENT_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_INTERVAL
-import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_REMAIN_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SETTING
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivitySetEndBinding
@@ -30,19 +29,18 @@ class SetEndActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun initViews() = with(binding) {
-
-        val remainSet = sharedPreferences.getInt(FITNESS_REMAIN_SET, -1)
+        val currentSet = sharedPreferences.getInt(FITNESS_CURRENT_SET,-1)
         val totalSet = sharedPreferences.getInt(FITNESS_SET, -1)
         val timeInterval = sharedPreferences.getInt(FITNESS_INTERVAL, -1)
 
-        SetEndRemainSetTextView.text = "남은 Set : ${remainSet - 1}, 총 Set : $totalSet"
+        SetEndRemainSetTextView.text = "남은 Set : ${totalSet - currentSet -1}, 총 Set : $totalSet"
         SetEndProgressbar.text = "$timeInterval 초"
         SetEndProgressbar.setProgress(timeInterval)
 
         startCountDown()
 
         sharedPreferences.edit {
-            putInt(FITNESS_REMAIN_SET, remainSet - 1)
+            putInt(FITNESS_CURRENT_SET, currentSet+1)
             commit()
         }
 

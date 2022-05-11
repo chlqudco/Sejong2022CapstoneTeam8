@@ -1,18 +1,23 @@
 package com.chlqudco.develop.sejong2022capstoneteam8.Fitness
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Message
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXLivePreviewActivity
 import com.chlqudco.develop.sejong2022capstoneteam8.R
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_CHOICE
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_COUNT
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_CURRENT_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_INTERVAL
-import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_REMAIN_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.FragmentChoiceFitnessBinding
 
@@ -57,15 +62,39 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
                     return@setOnClickListener
                 }
 
-                //선택한 기록들 저장
-                saveRecordToSharedPreference()
-
-                //액티비티 시작
-                val intent = Intent(context, DoFitnessActivity::class.java)
-                startActivity(intent)
+                //권한 처리
+                if (allPermissionsGranted()) {
+                    startFitness()
+                } else {
+                    ActivityCompat.requestPermissions(requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+                }
             }
 
         }
+    }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_CODE_PERMISSIONS){
+            if(allPermissionsGranted()){
+                startFitness()
+            }else{
+                Toast.makeText(context,"동의해야 카메라를 실행할 수 있습니다", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun startFitness() {
+        //선택한 기록들 저장
+        saveRecordToSharedPreference()
+
+        val intent = Intent(requireContext(), CameraXLivePreviewActivity::class.java)
+        startActivity(intent)
     }
 
     //토스트 메세지 띄우기
@@ -84,7 +113,7 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
         sharedPreferences?.edit {
             binding?.let { binding ->
                 putInt(FITNESS_SET, binding.ChoiceFitnessSetNumberPicker.value)
-                putInt(FITNESS_REMAIN_SET, binding.ChoiceFitnessSetNumberPicker.value)
+                putInt(FITNESS_CURRENT_SET,0)
                 putInt(FITNESS_INTERVAL, binding.ChoiceFitnessTimeInterValNumberPicker.value)
                 putInt(FITNESS_COUNT, binding.ChoiceFitnessCountNumberPicker.value)
 
@@ -92,13 +121,13 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
                 //무슨 운동 선택했는지 저장
                 when (binding.choiceVoiceRadioGroup.checkedRadioButtonId) {
                     R.id.fitness1 -> {
-                        putString(FITNESS_CHOICE,"팔굽혀펴기")
+                        putString(FITNESS_CHOICE,"pushups_down")
                     }
                     R.id.fitness2 -> {
                         putString(FITNESS_CHOICE,"턱걸이")
                     }
                     R.id.fitness3 -> {
-                        putString(FITNESS_CHOICE,"스쿼트")
+                        putString(FITNESS_CHOICE,"squats_down")
                     }
                     R.id.fitness4 -> {
                         putString(FITNESS_CHOICE,"런지")
@@ -110,5 +139,10 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
             }
             commit()
         }
+    }
+
+    companion object{
+        const val REQUEST_CODE_PERMISSIONS = 10
+        val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 }

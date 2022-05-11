@@ -33,6 +33,10 @@ android {
     buildFeatures{
         viewBinding true
     }
+    // Do NOT compress tflite model files (need to call out to developers!)
+    aaptOptions {
+        noCompress "tflite"
+    }
 }
 
 dependencies {
@@ -49,18 +53,20 @@ dependencies {
     //그 뭐냐 세트완료 프로그래스바
     implementation 'com.github.imcloudfloating:ProgressBar:1.1'
 
-    //그 뭐냐 pose detection 노 정확 버젼
+    // CameraX
+    implementation "androidx.camera:camera-camera2:1.0.0-SNAPSHOT"
+    implementation "androidx.camera:camera-lifecycle:1.0.0-SNAPSHOT"
+    implementation "androidx.camera:camera-view:1.0.0-SNAPSHOT"
+
+    //얘 일까요?
+    implementation 'com.google.mlkit:camera:16.0.0-beta3'
+
+    //포즈 디텍터
     implementation 'com.google.mlkit:pose-detection:18.0.0-beta2'
+    implementation 'com.google.mlkit:pose-detection-accurate:18.0.0-beta2'
 
-    //카메라 테스트
-    def camerax_version = "1.1.0-beta02"
-    implementation "androidx.camera:camera-core:1.1.0-beta02"
-    implementation "androidx.camera:camera-camera2:${camerax_version}"
-    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
-    implementation "androidx.camera:camera-video:${camerax_version}"
-
-    implementation "androidx.camera:camera-view:${camerax_version}"
-    implementation "androidx.camera:camera-extensions:${camerax_version}"
+    //얜 뭐지
+    implementation "com.google.android.odml:image:1.0.0-beta1"
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'

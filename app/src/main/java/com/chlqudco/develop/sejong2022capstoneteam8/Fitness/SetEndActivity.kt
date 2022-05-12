@@ -3,12 +3,14 @@ package com.chlqudco.develop.sejong2022capstoneteam8.Fitness
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Toast
 import androidx.core.content.edit
 import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXLivePreviewActivity
+import com.chlqudco.develop.sejong2022capstoneteam8.R
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_COUNT
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_CURRENT_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_INTERVAL
@@ -24,11 +26,43 @@ class SetEndActivity : AppCompatActivity() {
     //휴식시간 재보쟈
     private var currentCountDownTimer: CountDownTimer? = null
 
+    //째깍 째깍
+    private val soundPool = SoundPool.Builder().build()
+    private var tickingSoundId: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initViews()
+        initSoundPool()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        soundPool.autoResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        soundPool.autoPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        soundPool.release()
+    }
+
+    private fun initSoundPool() {
+        tickingSoundId = soundPool.load(this, R.raw.timer_ticking, 1)
+        playSound()
+    }
+
+    private fun playSound() {
+        tickingSoundId?.let {
+            soundPool.play(it, 1F, 1F, 0, 0, 1F)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -48,9 +82,6 @@ class SetEndActivity : AppCompatActivity() {
             commit()
         }
 
-        SetEndNextSetButton.setOnClickListener {
-            finish()
-        }
     }
 
     //카운트다운 타이머를 만들고 반환

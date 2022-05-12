@@ -148,7 +148,6 @@ class PoseClassifier @JvmOverloads constructor(
     }
 
     companion object {
-        private const val TAG = "PoseClassifier"
         private const val MAX_DISTANCE_TOP_K = 30
         private const val MEAN_DISTANCE_TOP_K = 10
 

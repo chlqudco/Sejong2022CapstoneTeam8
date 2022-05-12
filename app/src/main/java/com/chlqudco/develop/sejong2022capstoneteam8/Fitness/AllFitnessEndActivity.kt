@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.content.edit
 import androidx.core.view.isVisible
-import com.chlqudco.develop.sejong2022capstoneteam8.R
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.RetrofitService
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.SendHistoryEntity
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey

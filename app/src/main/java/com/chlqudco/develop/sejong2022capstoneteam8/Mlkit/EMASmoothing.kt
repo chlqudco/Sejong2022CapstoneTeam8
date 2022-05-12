@@ -17,8 +17,6 @@ package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
 import android.os.SystemClock
 import kotlin.jvm.JvmOverloads
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.EMASmoothing
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.ClassificationResult
 import java.util.*
 import java.util.concurrent.LinkedBlockingDeque
 

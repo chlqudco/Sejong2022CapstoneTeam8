@@ -20,11 +20,9 @@ import android.preference.PreferenceFragment
 import android.os.Bundle
 import android.preference.PreferenceCategory
 import com.chlqudco.develop.sejong2022capstoneteam8.R
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraSource
 import androidx.annotation.StringRes
 import android.preference.ListPreference
 import android.preference.Preference
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraSource.SizePair
 import android.preference.Preference.OnPreferenceChangeListener
 import java.lang.RuntimeException
 import java.util.HashMap

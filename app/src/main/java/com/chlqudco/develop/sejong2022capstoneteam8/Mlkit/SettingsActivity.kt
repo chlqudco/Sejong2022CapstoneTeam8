@@ -18,11 +18,8 @@ package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 import androidx.appcompat.app.AppCompatActivity
 import android.preference.PreferenceFragment
 import com.chlqudco.develop.sejong2022capstoneteam8.R
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXLivePreviewPreferenceFragment
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXSourceDemoPreferenceFragment
 import android.os.Bundle
 import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.SettingsActivity.LaunchSource
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.SettingsActivity
 import java.lang.Exception
 import java.lang.RuntimeException
 

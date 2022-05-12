@@ -16,8 +16,6 @@
 
 package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
 
-import android.graphics.Bitmap;
-
 import androidx.camera.core.ImageProxy;
 
 import com.google.mlkit.common.MlKitException;
@@ -28,9 +26,6 @@ import java.nio.ByteBuffer;
 
 /** An interface to process the images with different vision detectors and custom image models. */
 public interface VisionImageProcessor {
-
-  /** Processes a bitmap image. */
-  void processBitmap(Bitmap bitmap, GraphicOverlay graphicOverlay);
 
   /** Processes ByteBuffer image data, e.g. used for Camera1 live preview case. */
   void processByteBuffer(

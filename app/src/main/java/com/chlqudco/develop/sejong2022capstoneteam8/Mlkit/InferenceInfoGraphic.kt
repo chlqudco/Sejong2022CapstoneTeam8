@@ -18,9 +18,7 @@ package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.GraphicOverlay
 import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.GraphicOverlay.Graphic
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.InferenceInfoGraphic
 
 /** Graphic instance for rendering inference info (latency, FPS, resolution) in an overlay view.  */
 class InferenceInfoGraphic(

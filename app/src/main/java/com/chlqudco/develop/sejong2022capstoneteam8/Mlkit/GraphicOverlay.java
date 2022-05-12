@@ -81,10 +81,6 @@ public class GraphicOverlay extends View {
       return overlay.getContext().getApplicationContext();
     }
 
-    public boolean isImageFlipped() {
-      return overlay.isImageFlipped;
-    }
-
     /**
      * Adjusts the x coordinate from the image's coordinate system to the view coordinate system.
      */
@@ -137,13 +133,6 @@ public class GraphicOverlay extends View {
     }
   }
 
-  /** Removes a graphic from the overlay. */
-  public void remove(Graphic graphic) {
-    synchronized (lock) {
-      graphics.remove(graphic);
-    }
-    postInvalidate();
-  }
 
   /**
    * Sets the source information of the image being processed by detectors, including size and

@@ -125,17 +125,6 @@ public class CameraSource {
   // Public
   // ==============================================================================================
 
-  /** Stops the camera and releases the resources of the camera and underlying detector. */
-  public void release() {
-    synchronized (processorLock) {
-      stop();
-      cleanScreen();
-
-      if (frameProcessor != null) {
-        frameProcessor.stop();
-      }
-    }
-  }
 
   /**
    * Opens the camera and starts sending preview frames to the underlying detector. The preview
@@ -182,69 +171,6 @@ public class CameraSource {
     processingThread.start();
     return this;
   }
-
-  /**
-   * Closes the camera and stops sending frames to the underlying frame detector.
-   *
-   * <p>This camera source may be restarted again by calling {@link #start()} or {@link
-   * #start(SurfaceHolder)}.
-   *
-   * <p>Call {@link #release()} instead to completely shut down this camera source and release the
-   * resources of the underlying detector.
-   */
-  public synchronized void stop() {
-    processingRunnable.setActive(false);
-    if (processingThread != null) {
-      try {
-        // Wait for the thread to complete to ensure that we can't have multiple threads
-        // executing at the same time (i.e., which would happen if we called start too
-        // quickly after stop).
-        processingThread.join();
-      } catch (InterruptedException e) {
-        Log.d(TAG, "Frame processing thread interrupted on release.");
-      }
-      processingThread = null;
-    }
-
-    if (camera != null) {
-      camera.stopPreview();
-      camera.setPreviewCallbackWithBuffer(null);
-      try {
-        camera.setPreviewTexture(null);
-        dummySurfaceTexture = null;
-        camera.setPreviewDisplay(null);
-      } catch (Exception e) {
-        Log.e(TAG, "Failed to clear camera preview: " + e);
-      }
-      camera.release();
-      camera = null;
-    }
-
-    // Release the reference to any image buffers, since these will no longer be in use.
-    bytesToByteBuffer.clear();
-  }
-
-  /** Changes the facing of the camera. */
-  public synchronized void setFacing(int facing) {
-    if ((facing != CAMERA_FACING_BACK) && (facing != CAMERA_FACING_FRONT)) {
-      throw new IllegalArgumentException("Invalid camera: " + facing);
-    }
-    this.facing = facing;
-  }
-
-  /** Returns the preview size that is currently in use by the underlying camera. */
-  public Size getPreviewSize() {
-    return previewSize;
-  }
-
-  /**
-   * Returns the selected camera; one of {@link #CAMERA_FACING_BACK} or {@link
-   * #CAMERA_FACING_FRONT}.
-   */
-  public int getCameraFacing() {
-    return facing;
-  }
-
   /**
    * Opens the camera and applies the user settings.
    *
@@ -564,16 +490,6 @@ public class CameraSource {
     }
   }
 
-  public void setMachineLearningFrameProcessor(VisionImageProcessor processor) {
-    synchronized (processorLock) {
-      cleanScreen();
-      if (frameProcessor != null) {
-        frameProcessor.stop();
-      }
-      frameProcessor = processor;
-    }
-  }
-
   /**
    * This runnable controls access to the underlying receiver, calling it to process frames when
    * available from the camera. This is designed to run detection on frames as fast as possible
@@ -701,8 +617,4 @@ public class CameraSource {
     }
   }
 
-  /** Cleans up graphicOverlay and child classes can do their cleanups as well . */
-  private void cleanScreen() {
-    graphicOverlay.clear();
-  }
 }

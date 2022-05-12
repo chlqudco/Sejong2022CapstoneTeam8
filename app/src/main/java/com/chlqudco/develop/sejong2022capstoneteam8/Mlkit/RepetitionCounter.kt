@@ -16,9 +16,6 @@
 package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
 import kotlin.jvm.JvmOverloads
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.RepetitionCounter
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.ClassificationResult
-
 /**
  * Counts reps for the give class.
  */

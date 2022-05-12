@@ -96,7 +96,7 @@ abstract class VisionProcessorBase<T>(context: Context) : VisionImageProcessor {
   }
 
   // -----------------Code for processing single still image----------------------------------------
-  override fun processBitmap(bitmap: Bitmap?, graphicOverlay: GraphicOverlay) {
+  fun processBitmap(bitmap: Bitmap?, graphicOverlay: GraphicOverlay) {
     val frameStartMs = SystemClock.elapsedRealtime()
 
     if (isMlImageEnabled(graphicOverlay.context)) {

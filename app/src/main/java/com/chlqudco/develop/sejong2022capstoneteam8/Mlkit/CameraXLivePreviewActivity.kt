@@ -19,7 +19,9 @@ package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.media.SoundPool
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -60,6 +62,10 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
   private var lensFacing = CameraSelector.LENS_FACING_FRONT
   private var cameraSelector: CameraSelector? = null
 
+  //음성 재생 도구
+  private val soundPool = SoundPool.Builder().build()
+  private var soundList = mutableListOf<Int>()
+
   @SuppressLint("SetTextI18n")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -86,7 +92,11 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
           bindAllCameraUseCases()
         }
       )
+
+    //음성 초기화
+    initSoundPool()
   }
+
 
   override fun onSaveInstanceState(bundle: Bundle) {
     super.onSaveInstanceState(bundle)
@@ -107,6 +117,19 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
   public override fun onDestroy() {
     super.onDestroy()
     imageProcessor?.run { this.stop() }
+    soundPool.release()
+  }
+
+  private fun initSoundPool() {
+    soundList.add(soundPool.load(this, R.raw.one, 1))
+    soundList.add(soundPool.load(this, R.raw.two, 1))
+    soundList.add(soundPool.load(this, R.raw.three, 1))
+    soundList.add(soundPool.load(this, R.raw.four, 1))
+    soundList.add(soundPool.load(this, R.raw.five, 1))
+    soundList.add(soundPool.load(this, R.raw.six, 1))
+    soundList.add(soundPool.load(this, R.raw.seven, 1))
+    soundList.add(soundPool.load(this, R.raw.eight, 1))
+    soundList.add(soundPool.load(this, R.raw.nine, 1))
   }
 
 
@@ -194,7 +217,7 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
     finish()
   }
 
-  fun AllEnd(){
+  fun allEnd(){
     val intent = Intent(this,AllFitnessEndActivity::class.java)
     startActivity(intent)
     finish()
@@ -202,12 +225,14 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
 
   //해당 카운트 음성 출력
   fun playSound(count: Int){
-
+    //소리 재생
+    //재생하던 거 있으면 멈추고 그다음거 플레이
+    soundPool.autoPause()
+    soundPool.play(soundList[count-1], 1F, 1F, 0, 0, 1F)
   }
 
   companion object{
 
-    private const val TAG = "CameraXLivePreview"
     private const val POSE_DETECTION = "Pose Detection"
     private const val STATE_SELECTED_MODEL = "selected_model"
   }

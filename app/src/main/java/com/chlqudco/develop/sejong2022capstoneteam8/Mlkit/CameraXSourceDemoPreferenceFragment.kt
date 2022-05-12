@@ -17,7 +17,6 @@ package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
 import androidx.annotation.RequiresApi
 import android.os.Build.VERSION_CODES
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXLivePreviewPreferenceFragment
 import android.os.Bundle
 import android.preference.PreferenceScreen
 import com.chlqudco.develop.sejong2022capstoneteam8.R

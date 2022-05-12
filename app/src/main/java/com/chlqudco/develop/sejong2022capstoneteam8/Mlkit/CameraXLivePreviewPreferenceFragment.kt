@@ -16,15 +16,12 @@
 package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
 import android.content.Context
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.LivePreviewPreferenceFragment
 import android.preference.PreferenceCategory
 import com.chlqudco.develop.sejong2022capstoneteam8.R
 import androidx.camera.core.CameraSelector
 import androidx.annotation.StringRes
 import android.preference.ListPreference
 import android.hardware.camera2.CameraCharacteristics
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXLivePreviewPreferenceFragment
-import android.hardware.camera2.params.StreamConfigurationMap
 import android.graphics.SurfaceTexture
 import android.preference.Preference.OnPreferenceChangeListener
 import android.hardware.camera2.CameraManager

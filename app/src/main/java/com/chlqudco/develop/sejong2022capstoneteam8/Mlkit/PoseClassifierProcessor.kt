@@ -103,15 +103,14 @@ class PoseClassifierProcessor @WorkerThread constructor(
                     // Play a fun beep when rep counter updates.
                     val tg = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100)
                     tg.startTone(ToneGenerator.TONE_PROP_BEEP)
-                    lastRepResult =
-                        String.format(Locale.US, "%s : %d reps", repCounter.className, repsAfter)
+                    lastRepResult = String.format(Locale.US, "%s : %d reps", repCounter.className, repsAfter)
 
 
                     //개수가 다 끝난 경우
                     if (repsAfter == targetCount) {
                         //세트도 다 끝난 경우
                         if (targetSet == currentSet + 1) {
-                            (mContext as CameraXLivePreviewActivity).AllEnd()
+                            (mContext as CameraXLivePreviewActivity).allEnd()
                         } else {
                             (mContext as CameraXLivePreviewActivity).setEnd()
                         }
@@ -119,6 +118,8 @@ class PoseClassifierProcessor @WorkerThread constructor(
                     }
 
                     //여기서 음성 출력함수를 호출해야 하려나
+                    (mContext as CameraXLivePreviewActivity).playSound(repsAfter)
+
                     break
                 }
             }

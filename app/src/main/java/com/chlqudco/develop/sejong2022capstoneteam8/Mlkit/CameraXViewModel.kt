@@ -23,7 +23,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.lifecycle.LiveData
-import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXViewModel
 import androidx.core.content.ContextCompat
 import java.util.concurrent.ExecutionException
 

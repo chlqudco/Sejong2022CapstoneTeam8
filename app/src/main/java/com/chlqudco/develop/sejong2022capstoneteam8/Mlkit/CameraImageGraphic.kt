@@ -1,22 +1,13 @@
+package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
-package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.GraphicOverlay
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.GraphicOverlay.Graphic
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-
-/** Draw camera image to background. */
-// 실시간 이미지 그려주는 친구
-public class CameraImageGraphic extends GraphicOverlay.Graphic {
-
-  private final Bitmap bitmap;
-
-  public CameraImageGraphic(GraphicOverlay overlay, Bitmap bitmap) {
-    super(overlay);
-    this.bitmap = bitmap;
-  }
-
-  @Override
-  public void draw(Canvas canvas) {
-    canvas.drawBitmap(bitmap, getTransformationMatrix(), null);
-  }
+/** Draw camera image to background.  */ // 실시간 이미지 그려주는 친구
+class CameraImageGraphic(overlay: GraphicOverlay?, private val bitmap: Bitmap) : Graphic(overlay) {
+    override fun draw(canvas: Canvas) {
+        canvas.drawBitmap(bitmap, transformationMatrix, null)
+    }
 }

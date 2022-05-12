@@ -13,61 +13,60 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
-package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
-
-import android.os.Bundle;
-import android.preference.PreferenceFragment;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.chlqudco.develop.sejong2022capstoneteam8.R;
+import androidx.appcompat.app.AppCompatActivity
+import android.preference.PreferenceFragment
+import com.chlqudco.develop.sejong2022capstoneteam8.R
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXLivePreviewPreferenceFragment
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXSourceDemoPreferenceFragment
+import android.os.Bundle
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.SettingsActivity.LaunchSource
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.SettingsActivity
+import java.lang.Exception
+import java.lang.RuntimeException
 
 /**
  * Hosts the preference fragment to configure settings for a demo activity that specified by the
- * {@link LaunchSource}.
+ * [LaunchSource].
  */
-public class SettingsActivity extends AppCompatActivity {
-
-  public static final String EXTRA_LAUNCH_SOURCE = "extra_launch_source";
-
-  /** Specifies where this activity is launched from. */
-  @SuppressWarnings("NewApi") // CameraX is only available on API 21+
-  public enum LaunchSource {
-    CAMERAX_LIVE_PREVIEW(
+class SettingsActivity : AppCompatActivity() {
+    /** Specifies where this activity is launched from.  */
+    // CameraX is only available on API 21+
+    enum class LaunchSource(
+        val titleResId: Int,
+        val prefFragmentClass: Class<out PreferenceFragment?>
+    ) {
+        CAMERAX_LIVE_PREVIEW(
             R.string.pref_screen_title_camerax_live_preview,
-            CameraXLivePreviewPreferenceFragment.class),
-    CAMERAXSOURCE_DEMO(R.string.pref_screen_title_cameraxsource_demo, CameraXSourceDemoPreferenceFragment.class);
-
-    private final int titleResId;
-    private final Class<? extends PreferenceFragment> prefFragmentClass;
-
-    LaunchSource(int titleResId, Class<? extends PreferenceFragment> prefFragmentClass) {
-      this.titleResId = titleResId;
-      this.prefFragmentClass = prefFragmentClass;
+            CameraXLivePreviewPreferenceFragment::class.java
+        ),
+        CAMERAXSOURCE_DEMO(
+            R.string.pref_screen_title_cameraxsource_demo,
+            CameraXSourceDemoPreferenceFragment::class.java
+        );
     }
-  }
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    setContentView(R.layout.activity_settings);
-
-    LaunchSource launchSource = (LaunchSource) getIntent().getSerializableExtra(EXTRA_LAUNCH_SOURCE);
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) { actionBar.setTitle(launchSource.titleResId); }
-
-    try {
-      getFragmentManager()
-          .beginTransaction()
-          .replace(
-              R.id.settings_container,
-              launchSource.prefFragmentClass.getDeclaredConstructor().newInstance())
-          .commit();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_settings)
+        val launchSource = intent.getSerializableExtra(EXTRA_LAUNCH_SOURCE) as LaunchSource?
+        val actionBar = supportActionBar
+        actionBar?.setTitle(launchSource!!.titleResId)
+        try {
+            fragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.settings_container,
+                    launchSource!!.prefFragmentClass.getDeclaredConstructor().newInstance()
+                )
+                .commit()
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
     }
-  }
+
+    companion object {
+        const val EXTRA_LAUNCH_SOURCE = "extra_launch_source"
+    }
 }

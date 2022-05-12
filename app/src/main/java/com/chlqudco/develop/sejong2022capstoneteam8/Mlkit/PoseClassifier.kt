@@ -13,143 +13,153 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
-package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
-
-import static com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.PoseEmbedding.getPoseEmbedding;
-import static com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.Utils.maxAbs;
-import static com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.Utils.multiply;
-import static com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.Utils.multiplyAll;
-import static com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.Utils.subtract;
-import static com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.Utils.sumAbs;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
-import android.util.Pair;
-
-import com.google.mlkit.vision.common.PointF3D;
-import com.google.mlkit.vision.pose.Pose;
-import com.google.mlkit.vision.pose.PoseLandmark;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import android.util.Pair
+import kotlin.jvm.JvmOverloads
+import com.google.mlkit.vision.common.PointF3D
+import com.google.mlkit.vision.pose.Pose
+import java.util.*
 
 /**
- * Classifies {link Pose} based on given {@link PoseSample}s.
+ * Classifies {link Pose} based on given [PoseSample]s.
  *
- * <p>Inspired by K-Nearest Neighbors Algorithm with outlier filtering.
+ *
+ * Inspired by K-Nearest Neighbors Algorithm with outlier filtering.
  * https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
  */
-public class PoseClassifier {
-  private static final String TAG = "PoseClassifier";
-  private static final int MAX_DISTANCE_TOP_K = 30;
-  private static final int MEAN_DISTANCE_TOP_K = 10;
-  // Note Z has a lower weight as it is generally less accurate than X & Y.
-  private static final PointF3D AXES_WEIGHTS = PointF3D.from(1, 1, 0.2f);
-
-  private final List<PoseSample> poseSamples;
-  private final int maxDistanceTopK;
-  private final int meanDistanceTopK;
-  private final PointF3D axesWeights;
-
-  public PoseClassifier(List<PoseSample> poseSamples) {
-    this(poseSamples, MAX_DISTANCE_TOP_K, MEAN_DISTANCE_TOP_K, AXES_WEIGHTS);
-  }
-
-  public PoseClassifier(List<PoseSample> poseSamples, int maxDistanceTopK,
-                        int meanDistanceTopK, PointF3D axesWeights) {
-    this.poseSamples = poseSamples;
-    this.maxDistanceTopK = maxDistanceTopK;
-    this.meanDistanceTopK = meanDistanceTopK;
-    this.axesWeights = axesWeights;
-  }
-
-  private static List<PointF3D> extractPoseLandmarks(Pose pose) {
-    List<PointF3D> landmarks = new ArrayList<>();
-    for (PoseLandmark poseLandmark : pose.getAllPoseLandmarks()) {
-      landmarks.add(poseLandmark.getPosition3D());
-    }
-    return landmarks;
-  }
-
-  /**
-   * Returns the max range of confidence values.
-   *
-   * <p><Since we calculate confidence by counting {@link PoseSample}s that survived
-   * outlier-filtering by maxDistanceTopK and meanDistanceTopK, this range is the minimum of two.
-   */
-  public int confidenceRange() {
-    return min(maxDistanceTopK, meanDistanceTopK);
-  }
-
-  public ClassificationResult classify(Pose pose) {
-    return classify(extractPoseLandmarks(pose));
-  }
-
-  public ClassificationResult classify(List<PointF3D> landmarks) {
-    ClassificationResult result = new ClassificationResult();
-    // Return early if no landmarks detected.
-    if (landmarks.isEmpty()) {
-      return result;
+class PoseClassifier @JvmOverloads constructor(
+    private val poseSamples: List<PoseSample>,
+    private val maxDistanceTopK: Int = MAX_DISTANCE_TOP_K,
+    private val meanDistanceTopK: Int = MEAN_DISTANCE_TOP_K,
+    private val axesWeights: PointF3D = AXES_WEIGHTS
+) {
+    /**
+     * Returns the max range of confidence values.
+     *
+     *
+     * <Since we calculate confidence by counting></Since>[PoseSample]s that survived
+     * outlier-filtering by maxDistanceTopK and meanDistanceTopK, this range is the minimum of two.
+     */
+    fun confidenceRange(): Int {
+        return Math.min(maxDistanceTopK, meanDistanceTopK)
     }
 
-    // We do flipping on X-axis so we are horizontal (mirror) invariant.
-    List<PointF3D> flippedLandmarks = new ArrayList<>(landmarks);
-    multiplyAll(flippedLandmarks, PointF3D.from(-1, 1, 1));
-
-    List<PointF3D> embedding = getPoseEmbedding(landmarks);
-    List<PointF3D> flippedEmbedding = getPoseEmbedding(flippedLandmarks);
-
-    PriorityQueue<Pair<PoseSample, Float>> maxDistances = new PriorityQueue<>(maxDistanceTopK, (o1, o2) -> -Float.compare(o1.second, o2.second));
-
-    for (PoseSample poseSample : poseSamples) {
-      List<PointF3D> sampleEmbedding = poseSample.getEmbedding();
-
-      float originalMax = 0;
-      float flippedMax = 0;
-      for (int i = 0; i < embedding.size(); i++) {
-        originalMax = max(originalMax, maxAbs(multiply(subtract(embedding.get(i), sampleEmbedding.get(i)), axesWeights)));
-        flippedMax = max(flippedMax, maxAbs(multiply(subtract(flippedEmbedding.get(i), sampleEmbedding.get(i)), axesWeights)));
-      }
-      // Set the max distance as min of original and flipped max distance.
-      maxDistances.add(new Pair<>(poseSample, min(originalMax, flippedMax)));
-      // We only want to retain top n so pop the highest distance.
-      if (maxDistances.size() > maxDistanceTopK) {
-        maxDistances.poll();
-      }
+    fun classify(pose: Pose): ClassificationResult {
+        return classify(extractPoseLandmarks(pose))
     }
 
-    // Keeps higher mean distances on top so we can pop it when top_k size is reached.
-    PriorityQueue<Pair<PoseSample, Float>> meanDistances = new PriorityQueue<>(meanDistanceTopK, (o1, o2) -> -Float.compare(o1.second, o2.second));
-    // Retrive top K poseSamples by least mean distance to remove outliers.
-    for (Pair<PoseSample, Float> sampleDistances : maxDistances) {
-      PoseSample poseSample = sampleDistances.first;
-      List<PointF3D> sampleEmbedding = poseSample.getEmbedding();
+    fun classify(landmarks: List<PointF3D?>): ClassificationResult {
+        val result = ClassificationResult()
+        // Return early if no landmarks detected.
+        if (landmarks.isEmpty()) {
+            return result
+        }
 
-      float originalSum = 0;
-      float flippedSum = 0;
-      for (int i = 0; i < embedding.size(); i++) {
-        originalSum += sumAbs(multiply(subtract(embedding.get(i), sampleEmbedding.get(i)), axesWeights));
-        flippedSum += sumAbs(multiply(subtract(flippedEmbedding.get(i), sampleEmbedding.get(i)), axesWeights));
-      }
-      // Set the mean distance as min of original and flipped mean distances.
-      float meanDistance = min(originalSum, flippedSum) / (embedding.size() * 2);
-      meanDistances.add(new Pair<>(poseSample, meanDistance));
-      // We only want to retain top k so pop the highest mean distance.
-      if (meanDistances.size() > meanDistanceTopK) {
-        meanDistances.poll();
-      }
+        // We do flipping on X-axis so we are horizontal (mirror) invariant.
+        val flippedLandmarks: List<PointF3D?> = ArrayList(landmarks)
+        Utils.multiplyAll(flippedLandmarks, PointF3D.from(-1f, 1f, 1f))
+        val embedding = PoseEmbedding.getPoseEmbedding(landmarks)
+        val flippedEmbedding = PoseEmbedding.getPoseEmbedding(flippedLandmarks)
+        val maxDistances = PriorityQueue(
+            maxDistanceTopK
+        ) { o1: Pair<PoseSample, Float?>, o2: Pair<PoseSample, Float?> ->
+            -java.lang.Float.compare(
+                o1.second!!, o2.second!!
+            )
+        }
+        for (poseSample in poseSamples) {
+            val sampleEmbedding = poseSample.embedding
+            var originalMax = 0f
+            var flippedMax = 0f
+            for (i in embedding.indices) {
+                originalMax = Math.max(
+                    originalMax, Utils.maxAbs(
+                        Utils.multiply(
+                            Utils.subtract(
+                                embedding[i], sampleEmbedding[i]
+                            ), axesWeights
+                        )
+                    )
+                )
+                flippedMax = Math.max(
+                    flippedMax, Utils.maxAbs(
+                        Utils.multiply(
+                            Utils.subtract(
+                                flippedEmbedding[i], sampleEmbedding[i]
+                            ), axesWeights
+                        )
+                    )
+                )
+            }
+            // Set the max distance as min of original and flipped max distance.
+            maxDistances.add(Pair(poseSample, Math.min(originalMax, flippedMax)))
+            // We only want to retain top n so pop the highest distance.
+            if (maxDistances.size > maxDistanceTopK) {
+                maxDistances.poll()
+            }
+        }
+
+        // Keeps higher mean distances on top so we can pop it when top_k size is reached.
+        val meanDistances = PriorityQueue(
+            meanDistanceTopK
+        ) { o1: Pair<PoseSample, Float?>, o2: Pair<PoseSample, Float?> ->
+            -java.lang.Float.compare(
+                o1.second!!, o2.second!!
+            )
+        }
+        // Retrive top K poseSamples by least mean distance to remove outliers.
+        for (sampleDistances in maxDistances) {
+            val poseSample = sampleDistances.first
+            val sampleEmbedding = poseSample.embedding
+            var originalSum = 0f
+            var flippedSum = 0f
+            for (i in embedding.indices) {
+                originalSum += Utils.sumAbs(
+                    Utils.multiply(
+                        Utils.subtract(
+                            embedding[i], sampleEmbedding[i]
+                        ), axesWeights
+                    )
+                )
+                flippedSum += Utils.sumAbs(
+                    Utils.multiply(
+                        Utils.subtract(
+                            flippedEmbedding[i], sampleEmbedding[i]
+                        ), axesWeights
+                    )
+                )
+            }
+            // Set the mean distance as min of original and flipped mean distances.
+            val meanDistance = Math.min(originalSum, flippedSum) / (embedding.size * 2)
+            meanDistances.add(Pair(poseSample, meanDistance))
+            // We only want to retain top k so pop the highest mean distance.
+            if (meanDistances.size > meanDistanceTopK) {
+                meanDistances.poll()
+            }
+        }
+        for (sampleDistances in meanDistances) {
+            val className = sampleDistances.first.className
+
+            //테스트
+            result.incrementClassConfidence(className)
+        }
+        return result
     }
 
-    for (Pair<PoseSample, Float> sampleDistances : meanDistances) {
-      String className = sampleDistances.first.getClassName();
+    companion object {
+        private const val TAG = "PoseClassifier"
+        private const val MAX_DISTANCE_TOP_K = 30
+        private const val MEAN_DISTANCE_TOP_K = 10
 
-      //테스트
-
-      result.incrementClassConfidence(className);
+        // Note Z has a lower weight as it is generally less accurate than X & Y.
+        private val AXES_WEIGHTS = PointF3D.from(1f, 1f, 0.2f)
+        private fun extractPoseLandmarks(pose: Pose): List<PointF3D?> {
+            val landmarks: MutableList<PointF3D?> = ArrayList()
+            for (poseLandmark in pose.allPoseLandmarks) {
+                landmarks.add(poseLandmark.position3D)
+            }
+            return landmarks
+        }
     }
-
-    return result;
-  }
 }

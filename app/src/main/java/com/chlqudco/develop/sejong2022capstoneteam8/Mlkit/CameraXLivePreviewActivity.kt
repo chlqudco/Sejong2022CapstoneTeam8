@@ -200,6 +200,11 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
     finish()
   }
 
+  //해당 카운트 음성 출력
+  fun playSound(count: Int){
+
+  }
+
   companion object{
 
     private const val TAG = "CameraXLivePreview"

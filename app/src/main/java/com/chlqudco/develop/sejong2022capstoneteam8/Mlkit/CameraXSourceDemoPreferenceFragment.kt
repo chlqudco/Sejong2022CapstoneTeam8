@@ -13,39 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
-package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
+import androidx.annotation.RequiresApi
+import android.os.Build.VERSION_CODES
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXLivePreviewPreferenceFragment
+import android.os.Bundle
+import android.preference.PreferenceScreen
+import com.chlqudco.develop.sejong2022capstoneteam8.R
+import android.preference.PreferenceCategory
 
-import android.os.Build.VERSION_CODES;
-import android.os.Bundle;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceScreen;
-
-import androidx.annotation.RequiresApi;
-
-import com.chlqudco.develop.sejong2022capstoneteam8.R;
-
-/** Configures CameraXSource live preview demo settings. */
+/** Configures CameraXSource live preview demo settings.  */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-public class CameraXSourceDemoPreferenceFragment extends CameraXLivePreviewPreferenceFragment {
+class CameraXSourceDemoPreferenceFragment : CameraXLivePreviewPreferenceFragment() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val preferenceScreen =
+            findPreference(resources.getString(R.string.pref_screen)) as PreferenceScreen
+        val preferenceCategory =
+            findPreference(getString(R.string.pref_category_key_camera)) as PreferenceCategory
+        preferenceCategory.removePreference(
+            findPreference(getString(R.string.pref_key_camera_live_viewport))
+        )
+        // Remove the PreferenceCategories for hiding camera detection info.
+        preferenceScreen.removePreference(preferenceScreen.getPreference(1))
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    PreferenceScreen preferenceScreen =
-        (PreferenceScreen) findPreference(getResources().getString(R.string.pref_screen));
-
-    PreferenceCategory preferenceCategory =
-        (PreferenceCategory) findPreference(getString(R.string.pref_category_key_camera));
-
-    preferenceCategory.removePreference(
-        findPreference(getString(R.string.pref_key_camera_live_viewport)));
-    // Remove the PreferenceCategories for hiding camera detection info.
-    preferenceScreen.removePreference(preferenceScreen.getPreference(1));
-
-    // Remove the last 3 PreferenceCategories
-    preferenceScreen.removePreference(preferenceScreen.getPreference(2));
-    preferenceScreen.removePreference(preferenceScreen.getPreference(2));
-    preferenceScreen.removePreference(preferenceScreen.getPreference(2));
-  }
+        // Remove the last 3 PreferenceCategories
+        preferenceScreen.removePreference(preferenceScreen.getPreference(2))
+        preferenceScreen.removePreference(preferenceScreen.getPreference(2))
+        preferenceScreen.removePreference(preferenceScreen.getPreference(2))
+    }
 }

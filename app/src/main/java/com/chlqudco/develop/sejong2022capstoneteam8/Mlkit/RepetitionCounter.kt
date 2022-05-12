@@ -13,64 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
-package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
+import kotlin.jvm.JvmOverloads
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.RepetitionCounter
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.ClassificationResult
 
 /**
  * Counts reps for the give class.
  */
-public class RepetitionCounter {
-  private static final float DEFAULT_ENTER_THRESHOLD = 6f;
-  private static final float DEFAULT_EXIT_THRESHOLD = 4f;
+class RepetitionCounter @JvmOverloads constructor(
+    val className: String,
+    private val enterThreshold: Float = DEFAULT_ENTER_THRESHOLD,
+    private val exitThreshold: Float = DEFAULT_EXIT_THRESHOLD
+) {
+    var numRepeats = 0
+    private var poseEntered = false
 
-  private final String className;
-  private final float enterThreshold;
-  private final float exitThreshold;
-
-  private int numRepeats;
-  private boolean poseEntered;
-
-  public RepetitionCounter(String className) {
-    this(className, DEFAULT_ENTER_THRESHOLD, DEFAULT_EXIT_THRESHOLD);
-  }
-
-  public RepetitionCounter(String className, float enterThreshold, float exitThreshold) {
-    this.className = className;
-    this.enterThreshold = enterThreshold;
-    this.exitThreshold = exitThreshold;
-    numRepeats = 0;
-    poseEntered = false;
-  }
-
-  /**
-   * Adds a new Pose classification result and updates reps for given class.
-   *
-   * @param classificationResult {link ClassificationResult} of class to confidence values.
-   * @return number of reps.
-   */
-  public int addClassificationResult(ClassificationResult classificationResult) {
-    float poseConfidence = classificationResult.getClassConfidence(className);
-
-    if (!poseEntered) {
-      poseEntered = poseConfidence > enterThreshold;
-      return numRepeats;
+    /**
+     * Adds a new Pose classification result and updates reps for given class.
+     *
+     * @param classificationResult {link ClassificationResult} of class to confidence values.
+     * @return number of reps.
+     */
+    fun addClassificationResult(classificationResult: ClassificationResult): Int {
+        val poseConfidence = classificationResult.getClassConfidence(className)
+        if (!poseEntered) {
+            poseEntered = poseConfidence > enterThreshold
+            return numRepeats
+        }
+        if (poseConfidence < exitThreshold) {
+            numRepeats++
+            poseEntered = false
+        }
+        return numRepeats
     }
 
-    if (poseConfidence < exitThreshold) {
-      numRepeats++;
-      poseEntered = false;
+    companion object {
+        private const val DEFAULT_ENTER_THRESHOLD = 6f
+        private const val DEFAULT_EXIT_THRESHOLD = 4f
     }
-
-    return numRepeats;
-  }
-
-  public String getClassName() {
-    return className;
-  }
-
-  public int getNumRepeats() {
-    return numRepeats;
-  }
-
-  public void setNumRepeats(int num) { numRepeats = num;}
 }

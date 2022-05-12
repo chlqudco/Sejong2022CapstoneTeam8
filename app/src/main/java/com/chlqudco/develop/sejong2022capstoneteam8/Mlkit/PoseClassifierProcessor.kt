@@ -13,177 +13,160 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
-package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
-
-import static android.content.Context.MODE_PRIVATE;
-
-import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.FITNESS_CHOICE;
-import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.FITNESS_COUNT;
-import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.FITNESS_CURRENT_SET;
-import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.FITNESS_SET;
-import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.SETTING;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.media.AudioManager;
-import android.media.ToneGenerator;
-import android.os.Looper;
-import android.util.Log;
-
-import androidx.annotation.WorkerThread;
-
-import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey;
-import com.google.common.base.Preconditions;
-import com.google.mlkit.vision.pose.Pose;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import android.content.Context
+import android.content.SharedPreferences
+import com.google.mlkit.vision.pose.Pose
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey
+import android.os.Looper
+import android.media.ToneGenerator
+import android.media.AudioManager
+import android.util.Log
+import androidx.annotation.WorkerThread
+import com.google.common.base.Preconditions
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.util.*
 
 /**
- * Accepts a stream of {@link Pose} for classification and Rep counting.
+ * Accepts a stream of [Pose] for classification and Rep counting.
  */
-public class PoseClassifierProcessor {
+class PoseClassifierProcessor @WorkerThread constructor(
+    private val mContext: Context,
+    isStreamMode: Boolean
+) {
+    private val isStreamMode: Boolean
+    private var emaSmoothing: EMASmoothing? = null
+    private var repCounters: MutableList<RepetitionCounter>? = null
+    private var poseClassifier: PoseClassifier? = null
+    private var lastRepResult: String? = null
 
-  private static final String TAG = "PoseClassifierProcessor";
-  private static final String POSE_SAMPLES_FILE = "pose/fitness_pose_samples.csv";
-
-  // Specify classes for which we want rep counting.
-  // These are the labels in the given {@code POSE_SAMPLES_FILE}. You can set your own class labels
-  // for your pose samples.
-  private static final String PUSHUPS_CLASS = "pushups_down";
-  private static final String SQUATS_CLASS = "squats_down";
-  private static final String[] POSE_CLASSES = {PUSHUPS_CLASS, SQUATS_CLASS};
-
-  private final boolean isStreamMode;
-
-  private EMASmoothing emaSmoothing;
-  private List<RepetitionCounter> repCounters;
-  private PoseClassifier poseClassifier;
-  private String lastRepResult;
-
-  //sp 연습
-  private SharedPreferences preferences;
-  private String fitnessType="";
-  private int targetCount;
-  private int targetSet;
-  private int currentSet;
-  private Context mContext;
-
-  @WorkerThread
-  public PoseClassifierProcessor(Context context, boolean isStreamMode) {
-    mContext = context;
-    preferences = context.getSharedPreferences(SETTING, MODE_PRIVATE);
-
-    //여기서 관리해보자
-    fitnessType = preferences.getString(FITNESS_CHOICE,"");
-    targetCount = preferences.getInt(FITNESS_COUNT,0);
-    targetSet = preferences.getInt(FITNESS_SET,0);
-    currentSet = preferences.getInt(FITNESS_CURRENT_SET,0);
-
-    Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper());
-    this.isStreamMode = isStreamMode;
-    if (isStreamMode) {
-      emaSmoothing = new EMASmoothing();
-      repCounters = new ArrayList<>();
-      lastRepResult = "";
-    }
-    loadPoseSamples(context);
-  }
-
-  private void loadPoseSamples(Context context) {
-    List<PoseSample> poseSamples = new ArrayList<>();
-    try {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(POSE_SAMPLES_FILE)));
-      String csvLine = reader.readLine();
-      while (csvLine != null) {
-        // If line is not a valid {@link PoseSample}, we'll get null and skip adding to the list.
-        PoseSample poseSample = PoseSample.getPoseSample(csvLine, ",");
-        if (poseSample != null) {
-          poseSamples.add(poseSample);
-        }
-        csvLine = reader.readLine();
-      }
-    } catch (IOException e) {
-      Log.e(TAG, "Error when loading pose samples.\n" + e);
-    }
-    poseClassifier = new PoseClassifier(poseSamples);
-    if (isStreamMode) {
-      for (String className : POSE_CLASSES) {
-        repCounters.add(new RepetitionCounter(className));
-      }
-    }
-  }
-
-  @WorkerThread
-  public List<String> getPoseResult(Pose pose) {
-
-    //여기서 관리해보자
-    fitnessType = preferences.getString(FITNESS_CHOICE,"");
-    targetCount = preferences.getInt(FITNESS_COUNT,3);
-    targetSet = preferences.getInt(FITNESS_SET,0);
-    currentSet = preferences.getInt(FITNESS_CURRENT_SET,0);
-
-    Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper());
-    List<String> result = new ArrayList<>();
-    ClassificationResult classification = poseClassifier.classify(pose);
-
-    // Update {@link RepetitionCounter}s if {@code isStreamMode}.
-    if (isStreamMode) {
-      // Feed pose to smoothing even if no pose found.
-      classification = emaSmoothing.getSmoothedResult(classification);
-
-      // Return early without updating repCounter if no pose found.
-      if (pose.getAllPoseLandmarks().isEmpty()) {
-        result.add(lastRepResult);
-        return result;
-      }
-
-      Log.e("jang",""+targetCount);
-
-      for (RepetitionCounter repCounter : repCounters) {
-        int repsBefore = repCounter.getNumRepeats();
-        int repsAfter = repCounter.addClassificationResult(classification);
-        if (repsAfter > repsBefore && (fitnessType.equals(repCounter.getClassName()))) {
-          // Play a fun beep when rep counter updates.
-          ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-          tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-          lastRepResult = String.format(Locale.US, "%s : %d reps", repCounter.getClassName(), repsAfter);
-
-
-          //개수가 다 끝난 경우
-          if(repsAfter == targetCount){
-            //세트도 다 끝난 경우
-            if(targetSet == currentSet + 1){
-              ((CameraXLivePreviewActivity)mContext).AllEnd();
+    //sp 연습
+    private val preferences: SharedPreferences
+    private var fitnessType: String? = ""
+    private var targetCount: Int
+    private var targetSet: Int
+    private var currentSet: Int
+    private fun loadPoseSamples(context: Context) {
+        val poseSamples: MutableList<PoseSample> = ArrayList()
+        try {
+            val reader = BufferedReader(InputStreamReader(context.assets.open(POSE_SAMPLES_FILE)))
+            var csvLine = reader.readLine()
+            while (csvLine != null) {
+                // If line is not a valid {@link PoseSample}, we'll get null and skip adding to the list.
+                val poseSample = PoseSample.getPoseSample(csvLine, ",")
+                if (poseSample != null) {
+                    poseSamples.add(poseSample)
+                }
+                csvLine = reader.readLine()
             }
-            else {
-              ((CameraXLivePreviewActivity)mContext).setEnd();
-            }
-            return new ArrayList<String>();
-          }
-
-          //여기서 음성 출력함수를 호출해야 하려나
-
-
-          break;
+        } catch (e: IOException) {
+            Log.e(TAG, "Error when loading pose samples.\n$e")
         }
-      }
-      result.add(lastRepResult);
+        poseClassifier = PoseClassifier(poseSamples)
+        if (isStreamMode) {
+            for (className in POSE_CLASSES) {
+                repCounters!!.add(RepetitionCounter(className))
+            }
+        }
     }
 
-    // Add maxConfidence class of current frame to result if pose is found.
-    if (!pose.getAllPoseLandmarks().isEmpty()) {
-      String maxConfidenceClass = classification.getMaxConfidenceClass();
-      String maxConfidenceClassResult = String.format(Locale.US, "%s : %.2f confidence", maxConfidenceClass, classification.getClassConfidence(maxConfidenceClass) / poseClassifier.confidenceRange());
-      result.add(maxConfidenceClassResult);
+    @WorkerThread
+    fun getPoseResult(pose: Pose): List<String?> {
+
+        //여기서 관리해보자
+        fitnessType = preferences.getString(SharedPreferenceKey.FITNESS_CHOICE, "")
+        targetCount = preferences.getInt(SharedPreferenceKey.FITNESS_COUNT, 3)
+        targetSet = preferences.getInt(SharedPreferenceKey.FITNESS_SET, 0)
+        currentSet = preferences.getInt(SharedPreferenceKey.FITNESS_CURRENT_SET, 0)
+        Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper())
+        val result: MutableList<String?> = ArrayList()
+        var classification = poseClassifier!!.classify(pose)
+
+        // Update {@link RepetitionCounter}s if {@code isStreamMode}.
+        if (isStreamMode) {
+            // Feed pose to smoothing even if no pose found.
+            classification = emaSmoothing!!.getSmoothedResult(classification)
+
+            // Return early without updating repCounter if no pose found.
+            if (pose.allPoseLandmarks.isEmpty()) {
+                result.add(lastRepResult)
+                return result
+            }
+            Log.e("jang", "" + targetCount)
+            for (repCounter in repCounters!!) {
+                val repsBefore = repCounter.numRepeats
+                val repsAfter = repCounter.addClassificationResult(classification)
+                if (repsAfter > repsBefore && fitnessType == repCounter.className) {
+                    // Play a fun beep when rep counter updates.
+                    val tg = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100)
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP)
+                    lastRepResult =
+                        String.format(Locale.US, "%s : %d reps", repCounter.className, repsAfter)
+
+
+                    //개수가 다 끝난 경우
+                    if (repsAfter == targetCount) {
+                        //세트도 다 끝난 경우
+                        if (targetSet == currentSet + 1) {
+                            (mContext as CameraXLivePreviewActivity).AllEnd()
+                        } else {
+                            (mContext as CameraXLivePreviewActivity).setEnd()
+                        }
+                        return ArrayList()
+                    }
+
+                    //여기서 음성 출력함수를 호출해야 하려나
+                    break
+                }
+            }
+            result.add(lastRepResult)
+        }
+
+        // Add maxConfidence class of current frame to result if pose is found.
+        if (!pose.allPoseLandmarks.isEmpty()) {
+            val maxConfidenceClass = classification.maxConfidenceClass
+            val maxConfidenceClassResult = String.format(
+                Locale.US,
+                "%s : %.2f confidence",
+                maxConfidenceClass,
+                classification.getClassConfidence(maxConfidenceClass) / poseClassifier!!.confidenceRange()
+            )
+            result.add(maxConfidenceClassResult)
+        }
+        return result
     }
 
-    return result;
-  }
+    companion object {
+        private const val TAG = "PoseClassifierProcessor"
+        private const val POSE_SAMPLES_FILE = "pose/fitness_pose_samples.csv"
 
+        // Specify classes for which we want rep counting.
+        // These are the labels in the given {@code POSE_SAMPLES_FILE}. You can set your own class labels
+        // for your pose samples.
+        private const val PUSHUPS_CLASS = "pushups_down"
+        private const val SQUATS_CLASS = "squats_down"
+        private val POSE_CLASSES = arrayOf(PUSHUPS_CLASS, SQUATS_CLASS)
+    }
+
+    init {
+        preferences =
+            mContext.getSharedPreferences(SharedPreferenceKey.SETTING, Context.MODE_PRIVATE)
+
+        //여기서 관리해보자
+        fitnessType = preferences.getString(SharedPreferenceKey.FITNESS_CHOICE, "")
+        targetCount = preferences.getInt(SharedPreferenceKey.FITNESS_COUNT, 0)
+        targetSet = preferences.getInt(SharedPreferenceKey.FITNESS_SET, 0)
+        currentSet = preferences.getInt(SharedPreferenceKey.FITNESS_CURRENT_SET, 0)
+        Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper())
+        this.isStreamMode = isStreamMode
+        if (isStreamMode) {
+            emaSmoothing = EMASmoothing()
+            repCounters = ArrayList()
+            lastRepResult = ""
+        }
+        loadPoseSamples(mContext)
+    }
 }

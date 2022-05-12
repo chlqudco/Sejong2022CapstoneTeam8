@@ -13,80 +13,67 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
-package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
-
-import android.os.SystemClock;
-
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.LinkedBlockingDeque;
+import android.os.SystemClock
+import kotlin.jvm.JvmOverloads
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.EMASmoothing
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.ClassificationResult
+import java.util.*
+import java.util.concurrent.LinkedBlockingDeque
 
 /**
  * Runs EMA smoothing over a window with given stream of pose classification results.
  */
-public class EMASmoothing {
-  private static final int DEFAULT_WINDOW_SIZE = 10;
-  private static final float DEFAULT_ALPHA = 0.2f;
+class EMASmoothing @JvmOverloads constructor(
+    private val windowSize: Int = DEFAULT_WINDOW_SIZE,
+    private val alpha: Float = DEFAULT_ALPHA
+) {
+    // This is a window of {@link ClassificationResult}s as outputted by the {@link PoseClassifier}.
+    // We run smoothing over this window of size {@link windowSize}.
+    private val window: Deque<ClassificationResult>
+    private var lastInputMs: Long = 0
+    fun getSmoothedResult(classificationResult: ClassificationResult): ClassificationResult {
+        // Resets memory if the input is too far away from the previous one in time.
+        val nowMs = SystemClock.elapsedRealtime()
+        if (nowMs - lastInputMs > RESET_THRESHOLD_MS) {
+            window.clear()
+        }
+        lastInputMs = nowMs
 
-  private static final long RESET_THRESHOLD_MS = 100;
-
-  private final int windowSize;
-  private final float alpha;
-  // This is a window of {@link ClassificationResult}s as outputted by the {@link PoseClassifier}.
-  // We run smoothing over this window of size {@link windowSize}.
-  private final Deque<ClassificationResult> window;
-
-  private long lastInputMs;
-
-  public EMASmoothing() {
-    this(DEFAULT_WINDOW_SIZE, DEFAULT_ALPHA);
-  }
-
-  public EMASmoothing(int windowSize, float alpha) {
-    this.windowSize = windowSize;
-    this.alpha = alpha;
-    this.window = new LinkedBlockingDeque<>(windowSize);
-  }
-
-  public ClassificationResult getSmoothedResult(ClassificationResult classificationResult) {
-    // Resets memory if the input is too far away from the previous one in time.
-    long nowMs = SystemClock.elapsedRealtime();
-    if (nowMs - lastInputMs > RESET_THRESHOLD_MS) {
-      window.clear();
-    }
-    lastInputMs = nowMs;
-
-    // If we are at window size, remove the last (oldest) result.
-    if (window.size() == windowSize) {
-      window.pollLast();
-    }
-    // Insert at the beginning of the window.
-    window.addFirst(classificationResult);
-
-    Set<String> allClasses = new HashSet<>();
-    for (ClassificationResult result : window) {
-      allClasses.addAll(result.getAllClasses());
+        // If we are at window size, remove the last (oldest) result.
+        if (window.size == windowSize) {
+            window.pollLast()
+        }
+        // Insert at the beginning of the window.
+        window.addFirst(classificationResult)
+        val allClasses: MutableSet<String> = HashSet()
+        for (result in window) {
+            allClasses.addAll(result.allClasses)
+        }
+        val smoothedResult = ClassificationResult()
+        for (className in allClasses) {
+            var factor = 1f
+            var topSum = 0f
+            var bottomSum = 0f
+            for (result in window) {
+                val value = result.getClassConfidence(className)
+                topSum += factor * value
+                bottomSum += factor
+                factor = (factor * (1.0 - alpha)).toFloat()
+            }
+            smoothedResult.putClassConfidence(className, topSum / bottomSum)
+        }
+        return smoothedResult
     }
 
-    ClassificationResult smoothedResult = new ClassificationResult();
-
-    for (String className : allClasses) {
-      float factor = 1;
-      float topSum = 0;
-      float bottomSum = 0;
-      for (ClassificationResult result : window) {
-        float value = result.getClassConfidence(className);
-
-        topSum += factor * value;
-        bottomSum += factor;
-
-        factor = (float) (factor * (1.0 - alpha));
-      }
-      smoothedResult.putClassConfidence(className, topSum / bottomSum);
+    companion object {
+        private const val DEFAULT_WINDOW_SIZE = 10
+        private const val DEFAULT_ALPHA = 0.2f
+        private const val RESET_THRESHOLD_MS: Long = 100
     }
 
-    return smoothedResult;
-  }
+    init {
+        window = LinkedBlockingDeque(windowSize)
+    }
 }

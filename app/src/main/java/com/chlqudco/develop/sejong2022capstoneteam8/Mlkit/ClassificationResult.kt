@@ -13,48 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
-package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
-
-import static java.util.Collections.max;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*
 
 /**
- * Represents Pose classification result as outputted by {@link PoseClassifier}. Can be manipulated.
+ * Represents Pose classification result as outputted by [PoseClassifier]. Can be manipulated.
  */
-public class ClassificationResult {
-  // For an entry in this map, the key is the class name, and the value is how many times this class
-  // appears in the top K nearest neighbors. The value is in range [0, K] and could be a float after
-  // EMA smoothing. We use this number to represent the confidence of a pose being in this class.
-  private final Map<String, Float> classConfidences;
+class ClassificationResult {
+    // For an entry in this map, the key is the class name, and the value is how many times this class
+    // appears in the top K nearest neighbors. The value is in range [0, K] and could be a float after
+    // EMA smoothing. We use this number to represent the confidence of a pose being in this class.
+    private val classConfidences: MutableMap<String, Float>
+    val allClasses: Set<String>
+        get() = classConfidences.keys
 
-  public ClassificationResult() {
-    classConfidences = new HashMap<>();
-  }
+    fun getClassConfidence(className: String): Float {
+        return if (classConfidences.containsKey(className)) classConfidences[className]!! else 0F
+    }
 
-  public Set<String> getAllClasses() {
-    return classConfidences.keySet();
-  }
+    val maxConfidenceClass: String
+        get() = Collections.max<Map.Entry<String, Float>>(
+            classConfidences.entries
+        ) { entry1: Map.Entry<String, Float>, entry2: Map.Entry<String, Float> -> (entry1.value - entry2.value).toInt() }
+            .key
 
-  public float getClassConfidence(String className) {
-    return classConfidences.containsKey(className) ? classConfidences.get(className) : 0;
-  }
+    fun incrementClassConfidence(className: String) {
+        classConfidences[className] =
+            (if (classConfidences.containsKey(className)) classConfidences[className]!! + 1F else 1F)
+    }
 
-  public String getMaxConfidenceClass() {
-    return max(
-        classConfidences.entrySet(),
-        (entry1, entry2) -> (int) (entry1.getValue() - entry2.getValue()))
-        .getKey();
-  }
+    fun putClassConfidence(className: String, confidence: Float) {
+        classConfidences[className] = confidence
+    }
 
-  public void incrementClassConfidence(String className) {
-    classConfidences.put(className, classConfidences.containsKey(className) ? classConfidences.get(className) + 1 : 1);
-  }
-
-  public void putClassConfidence(String className, float confidence) {
-    classConfidences.put(className, confidence);
-  }
+    init {
+        classConfidences = HashMap()
+    }
 }

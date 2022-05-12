@@ -71,7 +71,7 @@ class PoseDetectorProcessor(
             if (poseClassifierProcessor == null) {
               poseClassifierProcessor = PoseClassifierProcessor(context, isStreamMode)
             }
-            classificationResult = poseClassifierProcessor!!.getPoseResult(pose)
+            classificationResult = poseClassifierProcessor!!.getPoseResult(pose) as List<String>
 
             //빈 리스트면 초기화
             if (classificationResult.isEmpty()){
@@ -95,7 +95,7 @@ class PoseDetectorProcessor(
             if (poseClassifierProcessor == null) {
               poseClassifierProcessor = PoseClassifierProcessor(context, isStreamMode)
             }
-            classificationResult = poseClassifierProcessor!!.getPoseResult(pose)
+            classificationResult = poseClassifierProcessor!!.getPoseResult(pose) as List<String>
 
             //빈 리스트면 초기화
             if (classificationResult.isEmpty()){

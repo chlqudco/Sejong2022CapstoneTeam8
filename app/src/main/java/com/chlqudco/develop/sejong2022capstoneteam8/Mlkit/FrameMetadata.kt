@@ -13,59 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit
 
-package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.FrameMetadata
 
 //아직 분석 안함
-/** Describing a frame info. */
-public class FrameMetadata {
+/** Describing a frame info.  */
+class FrameMetadata private constructor(val width: Int, val height: Int, val rotation: Int) {
 
-  private final int width;
-  private final int height;
-  private final int rotation;
+    /** Builder of [FrameMetadata].  */
+    class Builder {
+        private var width = 0
+        private var height = 0
+        private var rotation = 0
+        fun setWidth(width: Int): Builder {
+            this.width = width
+            return this
+        }
 
-  public int getWidth() {
-    return width;
-  }
+        fun setHeight(height: Int): Builder {
+            this.height = height
+            return this
+        }
 
-  public int getHeight() {
-    return height;
-  }
+        fun setRotation(rotation: Int): Builder {
+            this.rotation = rotation
+            return this
+        }
 
-  public int getRotation() {
-    return rotation;
-  }
-
-  private FrameMetadata(int width, int height, int rotation) {
-    this.width = width;
-    this.height = height;
-    this.rotation = rotation;
-  }
-
-  /** Builder of {@link FrameMetadata}. */
-  public static class Builder {
-
-    private int width;
-    private int height;
-    private int rotation;
-
-    public Builder setWidth(int width) {
-      this.width = width;
-      return this;
+        fun build(): FrameMetadata {
+            return FrameMetadata(width, height, rotation)
+        }
     }
-
-    public Builder setHeight(int height) {
-      this.height = height;
-      return this;
-    }
-
-    public Builder setRotation(int rotation) {
-      this.rotation = rotation;
-      return this;
-    }
-
-    public FrameMetadata build() {
-      return new FrameMetadata(width, height, rotation);
-    }
-  }
 }

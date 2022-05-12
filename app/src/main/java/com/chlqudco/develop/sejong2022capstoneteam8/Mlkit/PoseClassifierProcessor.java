@@ -20,6 +20,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.FITNESS_CHOICE;
 import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.FITNESS_COUNT;
+import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.FITNESS_CURRENT_SET;
 import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.FITNESS_SET;
 import static com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.SETTING;
 
@@ -48,7 +49,6 @@ import java.util.Locale;
  */
 public class PoseClassifierProcessor {
 
-
   private static final String TAG = "PoseClassifierProcessor";
   private static final String POSE_SAMPLES_FILE = "pose/fitness_pose_samples.csv";
 
@@ -69,17 +69,21 @@ public class PoseClassifierProcessor {
   //sp 연습
   private SharedPreferences preferences;
   private String fitnessType="";
-  private int targetCount = 0;
-  private int targetSet = 0;
+  private int targetCount;
+  private int targetSet;
+  private int currentSet;
+  private Context mContext;
 
   @WorkerThread
   public PoseClassifierProcessor(Context context, boolean isStreamMode) {
-    //여기서 관리해보자
+    mContext = context;
     preferences = context.getSharedPreferences(SETTING, MODE_PRIVATE);
+
+    //여기서 관리해보자
     fitnessType = preferences.getString(FITNESS_CHOICE,"");
     targetCount = preferences.getInt(FITNESS_COUNT,0);
     targetSet = preferences.getInt(FITNESS_SET,0);
-
+    currentSet = preferences.getInt(FITNESS_CURRENT_SET,0);
 
     Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper());
     this.isStreamMode = isStreamMode;
@@ -94,8 +98,7 @@ public class PoseClassifierProcessor {
   private void loadPoseSamples(Context context) {
     List<PoseSample> poseSamples = new ArrayList<>();
     try {
-      BufferedReader reader = new BufferedReader(
-          new InputStreamReader(context.getAssets().open(POSE_SAMPLES_FILE)));
+      BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(POSE_SAMPLES_FILE)));
       String csvLine = reader.readLine();
       while (csvLine != null) {
         // If line is not a valid {@link PoseSample}, we'll get null and skip adding to the list.
@@ -118,6 +121,13 @@ public class PoseClassifierProcessor {
 
   @WorkerThread
   public List<String> getPoseResult(Pose pose) {
+
+    //여기서 관리해보자
+    fitnessType = preferences.getString(FITNESS_CHOICE,"");
+    targetCount = preferences.getInt(FITNESS_COUNT,3);
+    targetSet = preferences.getInt(FITNESS_SET,0);
+    currentSet = preferences.getInt(FITNESS_CURRENT_SET,0);
+
     Preconditions.checkState(Looper.myLooper() != Looper.getMainLooper());
     List<String> result = new ArrayList<>();
     ClassificationResult classification = poseClassifier.classify(pose);
@@ -133,6 +143,8 @@ public class PoseClassifierProcessor {
         return result;
       }
 
+      Log.e("jang",""+targetCount);
+
       for (RepetitionCounter repCounter : repCounters) {
         int repsBefore = repCounter.getNumRepeats();
         int repsAfter = repCounter.addClassificationResult(classification);
@@ -142,8 +154,18 @@ public class PoseClassifierProcessor {
           tg.startTone(ToneGenerator.TONE_PROP_BEEP);
           lastRepResult = String.format(Locale.US, "%s : %d reps", repCounter.getClassName(), repsAfter);
 
-          //운동이 다 끝난 경우, 어떻게 해야돼?
 
+          //개수가 다 끝난 경우
+          if(repsAfter == targetCount){
+            //세트도 다 끝난 경우
+            if(targetSet == currentSet + 1){
+              ((CameraXLivePreviewActivity)mContext).AllEnd();
+            }
+            else {
+              ((CameraXLivePreviewActivity)mContext).setEnd();
+            }
+            return new ArrayList<String>();
+          }
 
           //여기서 음성 출력함수를 호출해야 하려나
 

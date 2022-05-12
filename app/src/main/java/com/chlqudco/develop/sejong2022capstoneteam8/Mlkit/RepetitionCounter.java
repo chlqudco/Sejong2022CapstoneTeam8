@@ -20,8 +20,6 @@ package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
  * Counts reps for the give class.
  */
 public class RepetitionCounter {
-  // These thresholds can be tuned in conjunction with the Top K values in {@link PoseClassifier}.
-  // The default Top K value is 10 so the range here is [0-10].
   private static final float DEFAULT_ENTER_THRESHOLD = 6f;
   private static final float DEFAULT_EXIT_THRESHOLD = 4f;
 
@@ -73,4 +71,6 @@ public class RepetitionCounter {
   public int getNumRepeats() {
     return numRepeats;
   }
+
+  public void setNumRepeats(int num) { numRepeats = num;}
 }

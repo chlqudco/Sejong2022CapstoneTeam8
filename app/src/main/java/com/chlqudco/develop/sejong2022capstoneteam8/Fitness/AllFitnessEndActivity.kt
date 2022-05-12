@@ -60,7 +60,7 @@ class AllFitnessEndActivity : AppCompatActivity() {
         var lunge_count:Int = 0
 
         when(fitnesstype){
-            "팔굽혀펴기" ->{
+            "pushups_down" ->{
                 push_up_set = sharedPreferences.getInt(FITNESS_SET,0)
                 push_up_count = sharedPreferences.getInt(FITNESS_COUNT,0)
             }
@@ -68,7 +68,7 @@ class AllFitnessEndActivity : AppCompatActivity() {
                 pull_up_set = sharedPreferences.getInt(FITNESS_SET,0)
                 pull_up_count = sharedPreferences.getInt(FITNESS_COUNT,0)
             }
-            "스쿼트"->{
+            "squats_down"->{
                 squat_set = sharedPreferences.getInt(FITNESS_SET,0)
                 squat_count = sharedPreferences.getInt(FITNESS_COUNT,0)
             }

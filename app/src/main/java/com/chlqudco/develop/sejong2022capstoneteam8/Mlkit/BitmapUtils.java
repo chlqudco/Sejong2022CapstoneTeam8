@@ -1,18 +1,3 @@
-/*
- * Copyright 2020 Google LLC. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package com.chlqudco.develop.sejong2022capstoneteam8.Mlkit;
 
@@ -41,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-/** Utils functions for bitmap conversions. */
 public class BitmapUtils {
   private static final String TAG = "BitmapUtils";
 
@@ -52,9 +36,7 @@ public class BitmapUtils {
     byte[] imageInBuffer = new byte[data.limit()];
     data.get(imageInBuffer, 0, imageInBuffer.length);
     try {
-      YuvImage image =
-          new YuvImage(
-              imageInBuffer, ImageFormat.NV21, metadata.getWidth(), metadata.getHeight(), null);
+      YuvImage image = new YuvImage(imageInBuffer, ImageFormat.NV21, metadata.getWidth(), metadata.getHeight(), null);
       ByteArrayOutputStream stream = new ByteArrayOutputStream();
       image.compressToJpeg(new Rect(0, 0, metadata.getWidth(), metadata.getHeight()), 80, stream);
 
@@ -69,7 +51,6 @@ public class BitmapUtils {
   }
 
   /** Converts a YUV_420_888 image from CameraX API to a bitmap. */
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Nullable
   @ExperimentalGetImage
   public static Bitmap getBitmap(ImageProxy image) {
@@ -80,14 +61,12 @@ public class BitmapUtils {
             .setRotation(image.getImageInfo().getRotationDegrees())
             .build();
 
-    ByteBuffer nv21Buffer =
-        yuv420ThreePlanesToNV21(image.getImage().getPlanes(), image.getWidth(), image.getHeight());
+    ByteBuffer nv21Buffer = yuv420ThreePlanesToNV21(image.getImage().getPlanes(), image.getWidth(), image.getHeight());
     return getBitmap(nv21Buffer, frameMetadata);
   }
 
   /** Rotates a bitmap if it is converted from a bytebuffer. */
-  private static Bitmap rotateBitmap(
-      Bitmap bitmap, int rotationDegrees, boolean flipX, boolean flipY) {
+  private static Bitmap rotateBitmap(Bitmap bitmap, int rotationDegrees, boolean flipX, boolean flipY) {
     Matrix matrix = new Matrix();
 
     // Rotate the image back to straight.
@@ -95,8 +74,7 @@ public class BitmapUtils {
 
     // Mirror the image along the X or Y axis.
     matrix.postScale(flipX ? -1.0f : 1.0f, flipY ? -1.0f : 1.0f);
-    Bitmap rotatedBitmap =
-        Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
     // Recycle the old bitmap if it has changed.
     if (rotatedBitmap != bitmap) {
@@ -105,96 +83,7 @@ public class BitmapUtils {
     return rotatedBitmap;
   }
 
-  @Nullable
-  public static Bitmap getBitmapFromContentUri(ContentResolver contentResolver, Uri imageUri)
-      throws IOException {
-    Bitmap decodedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri);
-    if (decodedBitmap == null) {
-      return null;
-    }
-    int orientation = getExifOrientationTag(contentResolver, imageUri);
-
-    int rotationDegrees = 0;
-    boolean flipX = false;
-    boolean flipY = false;
-    // See e.g. https://magnushoff.com/articles/jpeg-orientation/ for a detailed explanation on each
-    // orientation.
-    switch (orientation) {
-      case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
-        flipX = true;
-        break;
-      case ExifInterface.ORIENTATION_ROTATE_90:
-        rotationDegrees = 90;
-        break;
-      case ExifInterface.ORIENTATION_TRANSPOSE:
-        rotationDegrees = 90;
-        flipX = true;
-        break;
-      case ExifInterface.ORIENTATION_ROTATE_180:
-        rotationDegrees = 180;
-        break;
-      case ExifInterface.ORIENTATION_FLIP_VERTICAL:
-        flipY = true;
-        break;
-      case ExifInterface.ORIENTATION_ROTATE_270:
-        rotationDegrees = -90;
-        break;
-      case ExifInterface.ORIENTATION_TRANSVERSE:
-        rotationDegrees = -90;
-        flipX = true;
-        break;
-      case ExifInterface.ORIENTATION_UNDEFINED:
-      case ExifInterface.ORIENTATION_NORMAL:
-      default:
-        // No transformations necessary in this case.
-    }
-
-    return rotateBitmap(decodedBitmap, rotationDegrees, flipX, flipY);
-  }
-
-  private static int getExifOrientationTag(ContentResolver resolver, Uri imageUri) {
-    // We only support parsing EXIF orientation tag from local file on the device.
-    // See also:
-    // https://android-developers.googleblog.com/2016/12/introducing-the-exifinterface-support-library.html
-    if (!ContentResolver.SCHEME_CONTENT.equals(imageUri.getScheme())
-        && !ContentResolver.SCHEME_FILE.equals(imageUri.getScheme())) {
-      return 0;
-    }
-
-    ExifInterface exif;
-    try (InputStream inputStream = resolver.openInputStream(imageUri)) {
-      if (inputStream == null) {
-        return 0;
-      }
-
-      exif = new ExifInterface(inputStream);
-    } catch (IOException e) {
-      Log.e(TAG, "failed to open file to read rotation meta data: " + imageUri, e);
-      return 0;
-    }
-
-    return exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-  }
-
-  /**
-   * Converts YUV_420_888 to NV21 bytebuffer.
-   *
-   * <p>The NV21 format consists of a single byte array containing the Y, U and V values. For an
-   * image of size S, the first S positions of the array contain all the Y values. The remaining
-   * positions contain interleaved V and U values. U and V are subsampled by a factor of 2 in both
-   * dimensions, so there are S/4 U values and S/4 V values. In summary, the NV21 array will contain
-   * S Y values followed by S/4 VU values: YYYYYYYYYYYYYY(...)YVUVUVUVU(...)VU
-   *
-   * <p>YUV_420_888 is a generic format that can describe any YUV image where U and V are subsampled
-   * by a factor of 2 in both dimensions. {@link Image#getPlanes} returns an array with the Y, U and
-   * V planes. The Y plane is guaranteed not to be interleaved, so we can just copy its values into
-   * the first part of the NV21 array. The U and V planes may already have the representation in the
-   * NV21 format. This happens if the planes share the same buffer, the V buffer is one position
-   * before the U buffer and the planes have a pixelStride of 2. If this is case, we can just copy
-   * them to the NV21 array.
-   */
-  private static ByteBuffer yuv420ThreePlanesToNV21(
-      Plane[] yuv420888planes, int width, int height) {
+  private static ByteBuffer yuv420ThreePlanesToNV21(Plane[] yuv420888planes, int width, int height) {
     int imageSize = width * height;
     byte[] out = new byte[imageSize + 2 * (imageSize / 4)];
 
@@ -254,8 +143,7 @@ public class BitmapUtils {
    * <p>The input plane data will be copied in 'out', starting at 'offset' and every pixel will be
    * spaced by 'pixelStride'. Note that there is no row padding on the output.
    */
-  private static void unpackPlane(
-      Plane plane, int width, int height, byte[] out, int offset, int pixelStride) {
+  private static void unpackPlane(Plane plane, int width, int height, byte[] out, int offset, int pixelStride) {
     ByteBuffer buffer = plane.getBuffer();
     buffer.rewind();
 

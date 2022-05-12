@@ -40,10 +40,10 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 
-/**
- * Manages the camera and allows UI updates on top of it (e.g. overlaying extra Graphics or
- * displaying extra information). This receives preview frames from the camera at a specified rate,
- * sending those frames to child classes' detectors / classifiers as fast as it is able to process.
+/*
+ * 카메라를 관리하고 그 위에 UI 업데이트를 허용합니다(예: 추가 그래픽 오버레이 또는 추가 정보 표시).
+ *  이것은 지정된 속도로 카메라에서 미리보기 프레임을 수신하고 해당 프레임을 처리할 수 있는 한 빨리
+ *  자식 클래스의 감지기/분류기로 보냅니다.
  */
 public class CameraSource {
   @SuppressLint("InlinedApi")

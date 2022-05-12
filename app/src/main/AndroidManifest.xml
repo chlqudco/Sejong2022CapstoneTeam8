@@ -27,9 +27,6 @@
             android:name=".Fitness.SetEndActivity"
             android:exported="false" />
         <activity
-            android:name=".Fitness.DoFitnessActivity"
-            android:exported="false" />
-        <activity
             android:name=".LogInAndSignUp.SignUpActivity"
             android:exported="false" />
         <activity

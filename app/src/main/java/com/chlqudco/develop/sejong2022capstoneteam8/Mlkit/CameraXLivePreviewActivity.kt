@@ -35,6 +35,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.chlqudco.develop.sejong2022capstoneteam8.Fitness.AllFitnessEndActivity
 import com.chlqudco.develop.sejong2022capstoneteam8.Fitness.SetEndActivity
 import com.chlqudco.develop.sejong2022capstoneteam8.R
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey
@@ -44,26 +45,24 @@ import com.google.android.gms.common.annotation.KeepName
 import com.google.mlkit.common.MlKitException
 
 /** Live preview demo app for ML Kit APIs using CameraX. */
-@KeepName
 class CameraXLivePreviewActivity : AppCompatActivity(){
 
   private val sharedPreferences by lazy { getSharedPreferences(SharedPreferenceKey.SETTING, Context.MODE_PRIVATE) }
 
-  private var previewView: PreviewView? = null
+  private var previewView : PreviewView? = null
   private var graphicOverlay: GraphicOverlay? = null
   private var cameraProvider: ProcessCameraProvider? = null
   private var previewUseCase: Preview? = null
   private var analysisUseCase: ImageAnalysis? = null
   private var imageProcessor: VisionImageProcessor? = null
   private var needUpdateGraphicOverlayImageSourceInfo = false
-  private var selectedModel = POSE_DETECTION
+  private var selectedModel = "Pose Detection"
   private var lensFacing = CameraSelector.LENS_FACING_FRONT
   private var cameraSelector: CameraSelector? = null
 
   @SuppressLint("SetTextI18n")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    Log.d(TAG, "onCreate")
     if (savedInstanceState != null) {
       selectedModel = savedInstanceState.getString(STATE_SELECTED_MODEL, POSE_DETECTION)
     }
@@ -73,42 +72,20 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
     //무슨 운동 하는지
     val mainTextView = findViewById<TextView>(R.id.VisionMainTextView)
     val fitnessType = sharedPreferences.getString(SharedPreferenceKey.FITNESS_CHOICE,"null")
-    if (fitnessType=="pushups_down"){
-      mainTextView.text = "팔굽혀펴기 측정중"
-    }
-    else if (fitnessType=="squats_down"){
-      mainTextView.text = "스쿼트 측정중"
-    }
+    mainTextView.text = if (fitnessType=="pushups_down") "팔굽혀펴기 측정중" else "스쿼트 측정중"
 
     previewView = findViewById(R.id.preview_view)
-    if (previewView == null) {
-      Log.d(TAG, "previewView is null")
-    }
     graphicOverlay = findViewById(R.id.graphic_overlay)
-    if (graphicOverlay == null) {
-      Log.d(TAG, "graphicOverlay is null")
-    }
 
-    //제발 영향 없길
     ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application))
       .get(CameraXViewModel::class.java)
       .processCameraProvider
-      .observe(
-        this,
+      .observe(this,
         Observer { provider: ProcessCameraProvider? ->
           cameraProvider = provider
           bindAllCameraUseCases()
         }
       )
-
-    //설정 버튼 창
-    val settingsButton = findViewById<ImageView>(R.id.settings_button)
-    settingsButton.setOnClickListener {
-      val intent = Intent(applicationContext, SettingsActivity::class.java)
-      intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, SettingsActivity.LaunchSource.CAMERAX_LIVE_PREVIEW)
-      startActivity(intent)
-    }
-
   }
 
   override fun onSaveInstanceState(bundle: Bundle) {
@@ -132,9 +109,9 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
     imageProcessor?.run { this.stop() }
   }
 
+
   private fun bindAllCameraUseCases() {
     if (cameraProvider != null) {
-      // As required by CameraX API, unbinds all use cases before trying to re-bind any of them.
       cameraProvider!!.unbindAll()
       bindPreviewUseCase()
       bindAnalysisUseCase()
@@ -159,7 +136,7 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
     }
     previewUseCase = builder.build()
     previewUseCase!!.setSurfaceProvider(previewView!!.getSurfaceProvider())
-    cameraProvider!!.bindToLifecycle(/* lifecycleOwner= */ this, cameraSelector!!, previewUseCase)
+    cameraProvider!!.bindToLifecycle(this, cameraSelector!!, previewUseCase)
   }
 
   private fun bindAnalysisUseCase() {
@@ -178,15 +155,7 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
     val rescaleZ = PreferenceUtils.shouldPoseDetectionRescaleZForVisualization(this)
     val runClassification = PreferenceUtils.shouldPoseDetectionRunClassification(this)
 
-    imageProcessor = PoseDetectorProcessor(
-              this,
-              poseDetectorOptions,
-              shouldShowInFrameLikelihood,
-              visualizeZ,
-              rescaleZ,
-              runClassification,
-              /* isStreamMode = */ true
-            )
+    imageProcessor = PoseDetectorProcessor(this, poseDetectorOptions, shouldShowInFrameLikelihood, visualizeZ, rescaleZ, runClassification, true)
 
     val builder = ImageAnalysis.Builder()
     val targetResolution = PreferenceUtils.getCameraXTargetResolution(this, lensFacing)
@@ -213,8 +182,6 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
         try {
           imageProcessor!!.processImageProxy(imageProxy, graphicOverlay)
         } catch (e: MlKitException) {
-          Log.e(TAG, "Failed to process image. Error: " + e.localizedMessage)
-          Toast.makeText(applicationContext, e.localizedMessage, Toast.LENGTH_SHORT).show()
         }
       }
     )
@@ -222,22 +189,22 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
   }
 
   fun setEnd(){
-    val curSet = sharedPreferences.getInt(FITNESS_SET,0)
-
-    sharedPreferences.edit {
-      putInt(FITNESS_COUNT,0)
-      putInt(FITNESS_SET,curSet+1)
-      commit()
-    }
-
     val intent = Intent(this,SetEndActivity::class.java)
     startActivity(intent)
-
+    finish()
   }
 
-  companion object {
+  fun AllEnd(){
+    val intent = Intent(this,AllFitnessEndActivity::class.java)
+    startActivity(intent)
+    finish()
+  }
+
+  companion object{
+
     private const val TAG = "CameraXLivePreview"
     private const val POSE_DETECTION = "Pose Detection"
     private const val STATE_SELECTED_MODEL = "selected_model"
   }
+
 }

@@ -30,32 +30,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Configures live preview demo settings. */
+/** 라이브 미리 보기 데모 설정 구성 */
 public class LivePreviewPreferenceFragment extends PreferenceFragment {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    addPreferencesFromResource(R.xml.preference_live_preview_quickstart);
     setUpCameraPreferences();
   }
 
   void setUpCameraPreferences() {
-    PreferenceCategory cameraPreference =
-        (PreferenceCategory) findPreference(getString(R.string.pref_category_key_camera));
-    cameraPreference.removePreference(
-        findPreference(getString(R.string.pref_key_camerax_rear_camera_target_resolution)));
-    cameraPreference.removePreference(
-        findPreference(getString(R.string.pref_key_camerax_front_camera_target_resolution)));
-    setUpCameraPreviewSizePreference(
-        R.string.pref_key_rear_camera_preview_size,
-        R.string.pref_key_rear_camera_picture_size,
-        CameraSource.CAMERA_FACING_BACK);
-    setUpCameraPreviewSizePreference(
-        R.string.pref_key_front_camera_preview_size,
-        R.string.pref_key_front_camera_picture_size,
-        CameraSource.CAMERA_FACING_FRONT);
+    PreferenceCategory cameraPreference = (PreferenceCategory) findPreference(getString(R.string.pref_category_key_camera));
+    cameraPreference.removePreference(findPreference(getString(R.string.pref_key_camerax_rear_camera_target_resolution)));
+    cameraPreference.removePreference(findPreference(getString(R.string.pref_key_camerax_front_camera_target_resolution)));
+    setUpCameraPreviewSizePreference(R.string.pref_key_rear_camera_preview_size, R.string.pref_key_rear_camera_picture_size, CameraSource.CAMERA_FACING_BACK);
+    setUpCameraPreviewSizePreference(R.string.pref_key_front_camera_preview_size, R.string.pref_key_front_camera_picture_size, CameraSource.CAMERA_FACING_FRONT);
   }
 
   private void setUpCameraPreviewSizePreference(

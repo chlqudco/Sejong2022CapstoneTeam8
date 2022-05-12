@@ -37,14 +37,12 @@ import com.chlqudco.develop.sejong2022capstoneteam8.R;
 import java.util.Arrays;
 import java.util.List;
 
-/** Configures CameraX live preview demo settings. */
-@RequiresApi(VERSION_CODES.LOLLIPOP)
+/** CameraX 라이브 미리보기 데모 설정을 구성합니다. */
 public class CameraXLivePreviewPreferenceFragment extends LivePreviewPreferenceFragment {
 
   @Override
   void setUpCameraPreferences() {
-    PreferenceCategory cameraPreference =
-        (PreferenceCategory) findPreference(getString(R.string.pref_category_key_camera));
+    PreferenceCategory cameraPreference = (PreferenceCategory) findPreference(getString(R.string.pref_category_key_camera));
 
     cameraPreference.removePreference(findPreference(getString(R.string.pref_key_rear_camera_preview_size)));
     cameraPreference.removePreference(findPreference(getString(R.string.pref_key_front_camera_preview_size)));

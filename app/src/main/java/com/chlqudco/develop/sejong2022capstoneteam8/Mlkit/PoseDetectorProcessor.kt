@@ -63,10 +63,7 @@ class PoseDetectorProcessor(
   }
 
   override fun detectInImage(image: InputImage): Task<PoseWithClassification> {
-    return detector
-      .process(image)
-      .continueWith(
-        classificationExecutor,
+    return detector.process(image).continueWith(classificationExecutor,
         { task ->
           val pose = task.getResult()
           var classificationResult: List<String> = ArrayList()
@@ -75,6 +72,11 @@ class PoseDetectorProcessor(
               poseClassifierProcessor = PoseClassifierProcessor(context, isStreamMode)
             }
             classificationResult = poseClassifierProcessor!!.getPoseResult(pose)
+
+            //빈 리스트면 초기화
+            if (classificationResult.isEmpty()){
+              poseClassifierProcessor = null
+            }
           }
           PoseWithClassification(pose, classificationResult)
         }
@@ -94,6 +96,11 @@ class PoseDetectorProcessor(
               poseClassifierProcessor = PoseClassifierProcessor(context, isStreamMode)
             }
             classificationResult = poseClassifierProcessor!!.getPoseResult(pose)
+
+            //빈 리스트면 초기화
+            if (classificationResult.isEmpty()){
+              poseClassifierProcessor = null
+            }
           }
           PoseWithClassification(pose, classificationResult)
         }

@@ -2,10 +2,14 @@ package com.chlqudco.develop.sejong2022capstoneteam8.Fitness
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.widget.Toast
 import androidx.core.content.edit
+import com.chlqudco.develop.sejong2022capstoneteam8.Mlkit.CameraXLivePreviewActivity
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_COUNT
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_CURRENT_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_INTERVAL
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_SET
@@ -92,6 +96,10 @@ class SetEndActivity : AppCompatActivity() {
         updateProgressBar(0)
 
         stopCountDown()
+
+        val intent = Intent(this, CameraXLivePreviewActivity::class.java)
+        startActivity(intent)
+
         finish()
     }
 

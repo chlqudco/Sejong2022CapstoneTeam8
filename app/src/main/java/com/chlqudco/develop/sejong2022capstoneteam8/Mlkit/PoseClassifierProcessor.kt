@@ -49,6 +49,7 @@ class PoseClassifierProcessor @WorkerThread constructor(
     private var targetCount: Int
     private var targetSet: Int
     private var currentSet: Int
+
     private fun loadPoseSamples(context: Context) {
         val poseSamples: MutableList<PoseSample> = ArrayList()
         try {
@@ -95,6 +96,7 @@ class PoseClassifierProcessor @WorkerThread constructor(
                 result.add(lastRepResult)
                 return result
             }
+
             Log.e("jang", "" + targetCount)
             for (repCounter in repCounters!!) {
                 val repsBefore = repCounter.numRepeats
@@ -103,7 +105,7 @@ class PoseClassifierProcessor @WorkerThread constructor(
                     // Play a fun beep when rep counter updates.
                     val tg = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100)
                     tg.startTone(ToneGenerator.TONE_PROP_BEEP)
-                    lastRepResult = String.format(Locale.US, "%s : %d reps", repCounter.className, repsAfter)
+                    lastRepResult = String.format(Locale.US, "현재 횟수 : %d 회", repsAfter)
 
 
                     //개수가 다 끝난 경우
@@ -128,16 +130,48 @@ class PoseClassifierProcessor @WorkerThread constructor(
 
         // Add maxConfidence class of current frame to result if pose is found.
         if (!pose.allPoseLandmarks.isEmpty()) {
+            //여기서 같은 운동일 때만 보여줘야함
+
+            //예측한 운동 이름
             val maxConfidenceClass = classification.maxConfidenceClass
-            val maxConfidenceClassResult = String.format(
-                Locale.US,
-                "%s : %.2f confidence",
-                maxConfidenceClass,
-                classification.getClassConfidence(maxConfidenceClass) / poseClassifier!!.confidenceRange()
-            )
-            result.add(maxConfidenceClassResult)
+
+            if (isMatchedFitnessType(maxConfidenceClass)){
+                val percentNum = "${((classification.getClassConfidence(maxConfidenceClass) / poseClassifier!!.confidenceRange())*100).toInt()} % 일치"
+                val maxConfidenceClassResult = String.format(
+                    "%s : %s",
+                    getFitnessString(maxConfidenceClass),
+                    percentNum
+                )
+                result.add(maxConfidenceClassResult)
+            }
+
         }
         return result
+    }
+
+    private fun isMatchedFitnessType(name : String): Boolean {
+        if (name==PUSHUPS_CLASS || name == "pushups_up"){
+            if(fitnessType ==PUSHUPS_CLASS) return true
+        }
+        if (name==SQUATS_CLASS || name == "squats_up"){
+            if (fitnessType == SQUATS_CLASS) return true
+        }
+        return false
+    }
+
+    private fun getFitnessString(fitnessName: String): String {
+        if (fitnessName == "pushups_down") return "팔굽혀펴기 내려감"
+        if (fitnessName == "pushups_up") return "팔굽혀펴기 올라옴"
+
+        if (fitnessName == "squats_down") return "스쿼트 내려감"
+        if (fitnessName == "squats_up") return "스쿼트 올라옴"
+
+        if (fitnessName == "pushups_up") return "푸시업 올라옴"
+        if (fitnessName == "pushups_up") return "푸시업 올라옴"
+
+        if (fitnessName == "pushups_up") return "푸시업 올라옴"
+        if (fitnessName == "pushups_up") return "푸시업 올라옴"
+        return ""
     }
 
     companion object {

@@ -40,12 +40,6 @@ class InferenceInfoGraphic(
     override fun draw(canvas: Canvas) {
         val x = TEXT_SIZE * 0.5f
         val y = TEXT_SIZE * 1.5f
-        canvas.drawText(
-            "InputImage size: " + overlay.imageHeight + "x" + overlay.imageWidth,
-            x,
-            y,
-            textPaint
-        )
         if (!showLatencyInfo) {
             return
         }
@@ -54,14 +48,14 @@ class InferenceInfoGraphic(
             canvas.drawText(
                 "FPS: $framesPerSecond, Frame latency: $frameLatency ms",
                 x,
-                y + TEXT_SIZE,
+                y,
                 textPaint
             )
         } else {
             canvas.drawText("Frame latency: $frameLatency ms", x, y + TEXT_SIZE, textPaint)
         }
         canvas.drawText(
-            "Detector latency: $detectorLatency ms", x, y + TEXT_SIZE * 2, textPaint
+            "Detector latency: $detectorLatency ms", x, y + TEXT_SIZE, textPaint
         )
     }
 

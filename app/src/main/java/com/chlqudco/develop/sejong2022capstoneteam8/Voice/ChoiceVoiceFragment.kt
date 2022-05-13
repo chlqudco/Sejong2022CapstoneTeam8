@@ -32,30 +32,21 @@ class ChoiceVoiceFragment : Fragment(R.layout.fragment_choice_voice) {
 
             //목소리 정보 불러오기
             val sharedPreferences = context?.getSharedPreferences(SETTING, Context.MODE_PRIVATE)
-            var currentVoice = sharedPreferences?.getInt(VOICE, -1)
-
-            //예외처리 1. 목소리 한번도 안골랐던 경우 -> 여성1로 박제
-            if (currentVoice == -1) {
-                sharedPreferences?.edit {
-                    putInt(VOICE, R.id.girl1RadioButton)
-                    commit()
-                }
-                currentVoice = sharedPreferences?.getInt(VOICE, -1)
-            }
+            var currentVoice = sharedPreferences?.getInt(VOICE, 2)
 
             //선택한 음성 버튼 클릭
             when (currentVoice) {
-                R.id.noVoiceRadioButton -> {
+                0 -> {
                     binding.noVoiceRadioButton.isChecked = true
                 }
-                R.id.girl1RadioButton -> {
-                    binding.girl1RadioButton.isChecked = true
+                1 -> {
+                    binding.girlCyberRadioButton.isChecked = true
                 }
-                R.id.girl2RadioButton -> {
-                    binding.girl2RadioButton.isChecked = true
+                2 -> {
+                    binding.kimEggRadioButton.isChecked = true
                 }
-                R.id.man1RadioButton -> {
-                    binding.man1RadioButton.isChecked = true
+                3 -> {
+                    binding.englishRadioButton.isChecked = true
                 }
             }
 
@@ -64,20 +55,19 @@ class ChoiceVoiceFragment : Fragment(R.layout.fragment_choice_voice) {
                 sharedPreferences?.edit {
                     when (checkedId) {
                         R.id.noVoiceRadioButton -> {
-                            putInt(VOICE, R.id.noVoiceRadioButton)
+                            putInt(VOICE, 0)
                         }
-                        R.id.girl1RadioButton -> {
-                            putInt(VOICE, R.id.girl1RadioButton)
+                        R.id.girlCyberRadioButton -> {
+                            putInt(VOICE, 1)
                         }
-                        R.id.girl2RadioButton -> {
-                            putInt(VOICE, R.id.girl2RadioButton)
+                        R.id.kimEggRadioButton -> {
+                            putInt(VOICE, 2)
                         }
-                        R.id.man1RadioButton -> {
-                            putInt(VOICE, R.id.man1RadioButton)
+                        R.id.englishRadioButton -> {
+                            putInt(VOICE, 3)
                         }
                     }
                 }
-
             }
         }
     }

@@ -19,6 +19,15 @@ import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companio
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_CURRENT_SET
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_INTERVAL
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_SET
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.LUNGE
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.LUNGE_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PULLUP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PULLUP_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PUSHUP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PUSHUP_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SETTING
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SQUAT
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SQUAT_DOWN
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.FragmentChoiceFitnessBinding
 
 class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
@@ -109,7 +118,7 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
 
     //세팅 저장
     private fun saveRecordToSharedPreference() {
-        val sharedPreferences = context?.getSharedPreferences("setting", Context.MODE_PRIVATE)
+        val sharedPreferences = context?.getSharedPreferences(SETTING, Context.MODE_PRIVATE)
         sharedPreferences?.edit {
             binding?.let { binding ->
                 putInt(FITNESS_SET, binding.ChoiceFitnessSetNumberPicker.value)
@@ -121,16 +130,16 @@ class ChoiceFitnessFragment : Fragment(R.layout.fragment_choice_fitness) {
                 //무슨 운동 선택했는지 저장
                 when (binding.choiceVoiceRadioGroup.checkedRadioButtonId) {
                     R.id.fitness1 -> {
-                        putString(FITNESS_CHOICE,"pushups_down")
+                        putString(FITNESS_CHOICE, PUSHUP_DOWN)
                     }
                     R.id.fitness2 -> {
-                        putString(FITNESS_CHOICE,"턱걸이")
+                        putString(FITNESS_CHOICE, PULLUP_DOWN)
                     }
                     R.id.fitness3 -> {
-                        putString(FITNESS_CHOICE,"squats_down")
+                        putString(FITNESS_CHOICE, SQUAT_DOWN)
                     }
                     R.id.fitness4 -> {
-                        putString(FITNESS_CHOICE,"런지")
+                        putString(FITNESS_CHOICE, LUNGE_DOWN)
                     }
                     else -> {
                         putString(FITNESS_CHOICE,"null")

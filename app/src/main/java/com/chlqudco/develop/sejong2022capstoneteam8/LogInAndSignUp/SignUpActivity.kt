@@ -19,7 +19,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SignUpActivity : AppCompatActivity() {
-    val binding by lazy { ActivitySignUpBinding.inflate(layoutInflater) }
+    private val binding by lazy { ActivitySignUpBinding.inflate(layoutInflater) }
     private val sharedPreferences by lazy { this.getSharedPreferences("setting", Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,8 +65,6 @@ class SignUpActivity : AppCompatActivity() {
             val password = SignUpPasswordEditText.text.toString()
             val username = SignUpNameEditText.text.toString()
 
-            Log.e("jang","123")
-
             retrofit.create(RetrofitService::class.java)
                 .also {
                     it.register(id = userId, pw = password, name = username)
@@ -108,10 +106,5 @@ class SignUpActivity : AppCompatActivity() {
                 }
         }
 
-        SignUpTmpButton.setOnClickListener {
-            val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
     }
 }

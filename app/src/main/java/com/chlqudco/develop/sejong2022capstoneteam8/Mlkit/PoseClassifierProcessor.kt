@@ -24,6 +24,18 @@ import android.media.ToneGenerator
 import android.media.AudioManager
 import android.util.Log
 import androidx.annotation.WorkerThread
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.LUNGE
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.LUNGE_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.LUNGE_UP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PULLUP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PULLUP_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PULLUP_UP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PUSHUP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PUSHUP_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PUSHUP_UP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SQUAT
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SQUAT_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SQUAT_UP
 import com.google.common.base.Preconditions
 import java.io.BufferedReader
 import java.io.IOException
@@ -97,7 +109,6 @@ class PoseClassifierProcessor @WorkerThread constructor(
                 return result
             }
 
-            Log.e("jang", "" + targetCount)
             for (repCounter in repCounters!!) {
                 val repsBefore = repCounter.numRepeats
                 val repsAfter = repCounter.addClassificationResult(classification)
@@ -107,6 +118,8 @@ class PoseClassifierProcessor @WorkerThread constructor(
                     tg.startTone(ToneGenerator.TONE_PROP_BEEP)
                     lastRepResult = String.format(Locale.US, "현재 횟수 : %d 회", repsAfter)
 
+                    //일단 음성먼저 출력
+                    (mContext as CameraXLivePreviewActivity).playSound(repsAfter)
 
                     //개수가 다 끝난 경우
                     if (repsAfter == targetCount) {
@@ -118,9 +131,6 @@ class PoseClassifierProcessor @WorkerThread constructor(
                         }
                         return ArrayList()
                     }
-
-                    //여기서 음성 출력함수를 호출해야 하려나
-                    (mContext as CameraXLivePreviewActivity).playSound(repsAfter)
 
                     break
                 }
@@ -149,28 +159,37 @@ class PoseClassifierProcessor @WorkerThread constructor(
         return result
     }
 
+    //내가 선택한 운동이 맞는지
     private fun isMatchedFitnessType(name : String): Boolean {
-        if (name==PUSHUPS_CLASS || name == "pushups_up"){
-            if(fitnessType ==PUSHUPS_CLASS) return true
+        if (name== PUSHUP_DOWN || name == PUSHUP_UP){
+            if(fitnessType == PUSHUP_DOWN) return true
         }
-        if (name==SQUATS_CLASS || name == "squats_up"){
-            if (fitnessType == SQUATS_CLASS) return true
+        if (name==SQUAT_DOWN || name == SQUAT_UP){
+            if (fitnessType == SQUAT_DOWN) return true
+        }
+        if (name==PULLUP_DOWN || name == PULLUP_UP){
+            if (fitnessType == PULLUP_DOWN) return true
+        }
+        if (name== LUNGE_DOWN || name == SQUAT_UP){
+            if (fitnessType == LUNGE_DOWN) return true
         }
         return false
     }
 
     private fun getFitnessString(fitnessName: String): String {
-        if (fitnessName == "pushups_down") return "팔굽혀펴기 내려감"
-        if (fitnessName == "pushups_up") return "팔굽혀펴기 올라옴"
+        if (fitnessName == PUSHUP_DOWN) return "팔굽혀펴기 내려감"
+        if (fitnessName == PUSHUP_UP) return "팔굽혀펴기 올라옴"
 
-        if (fitnessName == "squats_down") return "스쿼트 내려감"
-        if (fitnessName == "squats_up") return "스쿼트 올라옴"
+        if (fitnessName == SQUAT_DOWN) return "스쿼트 내려감"
+        if (fitnessName == SQUAT_UP) {
+            return if(fitnessType== SQUAT) "스쿼트 올라옴" else "런지 올라옴"
+        }
 
-        if (fitnessName == "pushups_up") return "푸시업 올라옴"
-        if (fitnessName == "pushups_up") return "푸시업 올라옴"
+        if (fitnessName == LUNGE_DOWN) return "런지 내려감"
+        if (fitnessName == LUNGE_UP) return "런지 올라옴"
 
-        if (fitnessName == "pushups_up") return "푸시업 올라옴"
-        if (fitnessName == "pushups_up") return "푸시업 올라옴"
+        if (fitnessName == PULLUP_DOWN) return "턱걸이 내려감"
+        if (fitnessName == PULLUP_UP) return "턱걸이 올라옴"
         return ""
     }
 
@@ -183,12 +202,13 @@ class PoseClassifierProcessor @WorkerThread constructor(
         // for your pose samples.
         private const val PUSHUPS_CLASS = "pushups_down"
         private const val SQUATS_CLASS = "squats_down"
-        private val POSE_CLASSES = arrayOf(PUSHUPS_CLASS, SQUATS_CLASS)
+        private const val PULLUPS_CLASS = "pullup_down"
+        private const val LUNGES_CLASS = "lunge_down"
+        private val POSE_CLASSES = arrayOf(PUSHUPS_CLASS, SQUATS_CLASS, PULLUPS_CLASS, LUNGES_CLASS)
     }
 
     init {
-        preferences =
-            mContext.getSharedPreferences(SharedPreferenceKey.SETTING, Context.MODE_PRIVATE)
+        preferences = mContext.getSharedPreferences(SharedPreferenceKey.SETTING, Context.MODE_PRIVATE)
 
         //여기서 관리해보자
         fitnessType = preferences.getString(SharedPreferenceKey.FITNESS_CHOICE, "")

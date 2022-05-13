@@ -63,13 +63,6 @@ public class Utils {
     return Math.abs(point.getX()) + Math.abs(point.getY()) + Math.abs(point.getZ());
   }
 
-  public static void addAll(List<PointF3D> pointsList, PointF3D p) {
-    ListIterator<PointF3D> iterator = pointsList.listIterator();
-    while (iterator.hasNext()) {
-      iterator.set(add(iterator.next(), p));
-    }
-  }
-
   public static void subtractAll(PointF3D p, List<PointF3D> pointsList) {
     ListIterator<PointF3D> iterator = pointsList.listIterator();
     while (iterator.hasNext()) {

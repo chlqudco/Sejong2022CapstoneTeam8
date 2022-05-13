@@ -49,28 +49,28 @@
             android:text="무음" />
 
         <RadioButton
-            android:id="@+id/girl1RadioButton"
+            android:id="@+id/girlCyberRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="@drawable/sign_up_background"
-            android:text="여성 1" />
+            android:text="여성 전자음" />
 
         <RadioButton
-            android:id="@+id/girl2RadioButton"
+            android:id="@+id/kimEggRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="@drawable/sign_up_background"
-            android:text="여성 2" />
+            android:text="김계란(유튜버)" />
 
         <RadioButton
-            android:id="@+id/man1RadioButton"
+            android:id="@+id/englishRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="@drawable/sign_up_background"
-            android:text="남성 1" />
+            android:text="영어" />
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

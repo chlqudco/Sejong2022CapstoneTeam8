@@ -43,6 +43,13 @@ import com.chlqudco.develop.sejong2022capstoneteam8.R
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_COUNT
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_SET
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PULLUP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PULLUP_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PUSHUP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PUSHUP_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SQUAT
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SQUAT_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.VOICE
 import com.google.android.gms.common.annotation.KeepName
 import com.google.mlkit.common.MlKitException
 
@@ -62,9 +69,56 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
   private var lensFacing = CameraSelector.LENS_FACING_FRONT
   private var cameraSelector: CameraSelector? = null
 
+  //무슨 목소리 선택했는지
+  private val choiceVoice : Int by lazy { sharedPreferences.getInt(VOICE,2) }
+
   //음성 재생 도구
   private val soundPool = SoundPool.Builder().build()
-  private var soundList = mutableListOf<Int>()
+
+  private var sound1 : MutableList<Int> = mutableListOf()
+  private var sound2 : MutableList<Int> = mutableListOf()
+  private var sound3 : MutableList<Int> = mutableListOf()
+
+  /*
+  private var soundList = arrayOf(
+    arrayOf(
+      soundPool.load(this, R.raw.cyber_1, 1),
+      soundPool.load(this, R.raw.cyber_2, 1),
+      soundPool.load(this, R.raw.cyber_3, 1),
+      soundPool.load(this, R.raw.cyber_4, 1),
+      soundPool.load(this, R.raw.cyber_5, 1),
+      soundPool.load(this, R.raw.cyber_6, 1),
+      soundPool.load(this, R.raw.cyber_7, 1),
+      soundPool.load(this, R.raw.cyber_8, 1),
+      soundPool.load(this, R.raw.cyber_9, 1),
+      soundPool.load(this, R.raw.cyber_10, 1)
+    ),
+    arrayOf(
+      soundPool.load(this, R.raw.egg1, 1),
+      soundPool.load(this, R.raw.egg2, 1),
+      soundPool.load(this, R.raw.egg3, 1),
+      soundPool.load(this, R.raw.egg4, 1),
+      soundPool.load(this, R.raw.egg5, 1),
+      soundPool.load(this, R.raw.egg6, 1),
+      soundPool.load(this, R.raw.egg7, 1),
+      soundPool.load(this, R.raw.egg8, 1),
+      soundPool.load(this, R.raw.egg9, 1),
+      soundPool.load(this, R.raw.egg10, 1)
+    ),
+    arrayOf(
+      soundPool.load(this, R.raw.one, 1),
+      soundPool.load(this, R.raw.two, 1),
+      soundPool.load(this, R.raw.three, 1),
+      soundPool.load(this, R.raw.four, 1),
+      soundPool.load(this, R.raw.five, 1),
+      soundPool.load(this, R.raw.six, 1),
+      soundPool.load(this, R.raw.seven, 1),
+      soundPool.load(this, R.raw.eight, 1),
+      soundPool.load(this, R.raw.nine, 1)
+    )
+  )
+
+   */
 
   @SuppressLint("SetTextI18n")
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,10 +129,15 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
     cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
     setContentView(R.layout.activity_vision_camerax_live_preview)
 
+    choiceVoice
+
     //무슨 운동 하는지
     val mainTextView = findViewById<TextView>(R.id.VisionMainTextView)
     val fitnessType = sharedPreferences.getString(SharedPreferenceKey.FITNESS_CHOICE,"null")
-    mainTextView.text = if (fitnessType=="pushups_down") "팔굽혀펴기 측정중" else "스쿼트 측정중"
+    if (fitnessType== PUSHUP_DOWN) mainTextView.text =  "팔굽혀펴기 측정중"
+    else if(fitnessType== SQUAT_DOWN) mainTextView.text =  "스쿼트 측정중"
+    else if(fitnessType== PULLUP_DOWN) mainTextView.text =  "턱걸이 측정중"
+    else mainTextView.text =  "런지 측정중"
 
     previewView = findViewById(R.id.preview_view)
     graphicOverlay = findViewById(R.id.graphic_overlay)
@@ -93,7 +152,6 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
         }
       )
 
-    //음성 초기화
     initSoundPool()
   }
 
@@ -121,15 +179,38 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
   }
 
   private fun initSoundPool() {
-    soundList.add(soundPool.load(this, R.raw.one, 1))
-    soundList.add(soundPool.load(this, R.raw.two, 1))
-    soundList.add(soundPool.load(this, R.raw.three, 1))
-    soundList.add(soundPool.load(this, R.raw.four, 1))
-    soundList.add(soundPool.load(this, R.raw.five, 1))
-    soundList.add(soundPool.load(this, R.raw.six, 1))
-    soundList.add(soundPool.load(this, R.raw.seven, 1))
-    soundList.add(soundPool.load(this, R.raw.eight, 1))
-    soundList.add(soundPool.load(this, R.raw.nine, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_1, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_2, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_3, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_4, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_5, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_6, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_7, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_8, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_9, 1))
+    sound1.add(soundPool.load(this, R.raw.cyber_10, 1))
+
+    sound2.add(soundPool.load(this, R.raw.egg1, 1))
+    sound2.add(soundPool.load(this, R.raw.egg2, 1))
+    sound2.add(soundPool.load(this, R.raw.egg3, 1))
+    sound2.add(soundPool.load(this, R.raw.egg4, 1))
+    sound2.add(soundPool.load(this, R.raw.egg5, 1))
+    sound2.add(soundPool.load(this, R.raw.egg6, 1))
+    sound2.add(soundPool.load(this, R.raw.egg7, 1))
+    sound2.add(soundPool.load(this, R.raw.egg8, 1))
+    sound2.add(soundPool.load(this, R.raw.egg9, 1))
+    sound2.add(soundPool.load(this, R.raw.egg10, 1))
+
+    sound3.add(soundPool.load(this, R.raw.one, 1))
+    sound3.add(soundPool.load(this, R.raw.two, 1))
+    sound3.add(soundPool.load(this, R.raw.three, 1))
+    sound3.add(soundPool.load(this, R.raw.four, 1))
+    sound3.add(soundPool.load(this, R.raw.five, 1))
+    sound3.add(soundPool.load(this, R.raw.six, 1))
+    sound3.add(soundPool.load(this, R.raw.seven, 1))
+    sound3.add(soundPool.load(this, R.raw.eight, 1))
+    sound3.add(soundPool.load(this, R.raw.nine, 1))
+
   }
 
 
@@ -225,10 +306,24 @@ class CameraXLivePreviewActivity : AppCompatActivity(){
 
   //해당 카운트 음성 출력
   fun playSound(count: Int){
-    //소리 재생
-    //재생하던 거 있으면 멈추고 그다음거 플레이
+
+    //재생하던 거 있으면 멈추고 재생
     soundPool.autoPause()
-    soundPool.play(soundList[count-1], 1F, 1F, 0, 0, 1F)
+    when(choiceVoice){
+      1->{
+        soundPool.play(sound1[(count-1)%10], 1F, 1F, 0, 0, 1F)
+      }
+      2->{
+        soundPool.play(sound2[(count-1)%10], 1F, 1F, 0, 0, 1F)
+      }
+      3->{
+        soundPool.play(sound3[(count-1)%10], 1F, 1F, 0, 0, 1F)
+      }
+      else->{
+
+      }
+    }
+    //soundPool.play(soundList[choiceVoice][(count-1)%10], 1F, 1F, 0, 0, 1F)
   }
 
   companion object{

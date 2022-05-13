@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chlqudco.develop.sejong2022capstoneteam8.R
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.RetrofitService
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.SelectedDateHistoryEntity
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SETTING
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.TOKEN
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.USER_NAME
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.FragmentMyPageBinding
@@ -25,7 +26,7 @@ import java.util.*
 class MyPageFragment : Fragment(R.layout.fragment_my_page) {
     private var binding: FragmentMyPageBinding? = null
     private val adapter = MyPageRecyclerAdapter()
-    private val sharedPreferences by lazy { context?.getSharedPreferences("setting", Context.MODE_PRIVATE) }
+    private val sharedPreferences by lazy { context?.getSharedPreferences(SETTING, Context.MODE_PRIVATE) }
     private val retrofit by lazy { Retrofit.Builder().baseUrl("http://112.220.188.174/").addConverterFactory(GsonConverterFactory.create()).build() }
     private val token by lazy {sharedPreferences?.getString(TOKEN,"")}
 
@@ -133,7 +134,7 @@ class MyPageFragment : Fragment(R.layout.fragment_my_page) {
 
                                             //모든 운동 살펴보면서 기록 추가
                                             if(entity.lungeCount!=0){
-                                                adapter.dataList.add(History(name = "런  지", set = entity.lungeSet, count = entity.lungeCount))
+                                                adapter.dataList.add(History(name = "런   지", set = entity.lungeSet, count = entity.lungeCount))
                                             }
                                             if(entity.pullUpCount!=0){
                                                 adapter.dataList.add(History(name = "턱걸이", set = entity.pullUpSet, count = entity.pullUpCount))

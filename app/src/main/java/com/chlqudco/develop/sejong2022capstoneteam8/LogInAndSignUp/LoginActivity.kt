@@ -11,6 +11,7 @@ import com.chlqudco.develop.sejong2022capstoneteam8.Service.LoginUserEntity
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.RetrofitService
 import com.chlqudco.develop.sejong2022capstoneteam8.Service.SuccessEntity
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SETTING
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SIGN_UP_ID
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SIGN_UP_PASSWORD
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivityLoginBinding
@@ -23,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class LoginActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
-    private val sharedPreferences by lazy { this.getSharedPreferences("setting", Context.MODE_PRIVATE) }
+    private val sharedPreferences by lazy { this.getSharedPreferences(SETTING, Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,15 +42,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun initViews() = with(binding) {
 
-
-
         LogInSignUpButton.setOnClickListener {
             val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
             startActivity(intent)
-        }
-
-        LogIntmpButton.setOnClickListener {
-            finish()
         }
 
         //로그인 버튼 클릭 이벤트
@@ -61,11 +56,8 @@ class LoginActivity : AppCompatActivity() {
             }
 
             //예외처리 2. 이메일 형식으로 입력 안한 경우
-            if (LogInIdEditText.text.contains('@').not() || LogInIdEditText.text.contains('.')
-                    .not() || LogInIdEditText.text.split('@').size < 2
-            ) {
-                Toast.makeText(this@LoginActivity, "ID는 이메일 형식으로 입력해 주세요", Toast.LENGTH_SHORT)
-                    .show()
+            if (LogInIdEditText.text.contains('@').not() || LogInIdEditText.text.contains('.').not() || LogInIdEditText.text.split('@').size < 2) {
+                Toast.makeText(this@LoginActivity, "ID는 이메일 형식으로 입력해 주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

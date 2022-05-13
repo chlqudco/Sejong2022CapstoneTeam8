@@ -26,10 +26,7 @@ object PreferenceUtils {
 
     @JvmStatic
     fun getCameraPreviewSizePair(context: Context, cameraId: Int): SizePair? {
-        Preconditions.checkArgument(
-            cameraId == CameraSource.CAMERA_FACING_BACK
-                    || cameraId == CameraSource.CAMERA_FACING_FRONT
-        )
+        Preconditions.checkArgument(cameraId == CameraSource.CAMERA_FACING_BACK || cameraId == CameraSource.CAMERA_FACING_FRONT)
         val previewSizePrefKey: String
         val pictureSizePrefKey: String
         if (cameraId == CameraSource.CAMERA_FACING_BACK) {

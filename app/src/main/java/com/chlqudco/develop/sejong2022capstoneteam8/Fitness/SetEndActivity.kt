@@ -119,6 +119,15 @@ class SetEndActivity : AppCompatActivity() {
     private fun stopCountDown() {
         currentCountDownTimer?.cancel()
         currentCountDownTimer = null
+    }
 
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mediaPlayer.start()
     }
 }

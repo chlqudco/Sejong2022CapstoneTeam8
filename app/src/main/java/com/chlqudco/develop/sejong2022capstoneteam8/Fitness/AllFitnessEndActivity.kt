@@ -13,6 +13,15 @@ import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_CHOICE
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_COUNT
 import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.FITNESS_SET
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.LUNGE
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.LUNGE_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PULLUP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PULLUP_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PUSHUP
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.PUSHUP_DOWN
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SETTING
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SQUAT
+import com.chlqudco.develop.sejong2022capstoneteam8.SharedPreferenceKey.Companion.SQUAT_DOWN
 import com.chlqudco.develop.sejong2022capstoneteam8.databinding.ActivityAllFitnessEndBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,7 +33,7 @@ import java.util.*
 class AllFitnessEndActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityAllFitnessEndBinding.inflate(layoutInflater) }
-    private val sharedPreferences by lazy { this.getSharedPreferences("setting", Context.MODE_PRIVATE) }
+    private val sharedPreferences by lazy { this.getSharedPreferences(SETTING, Context.MODE_PRIVATE) }
     private val retrofit by lazy { Retrofit.Builder().baseUrl("http://112.220.188.174/").addConverterFactory(GsonConverterFactory.create()).build() }
     private val token by lazy {sharedPreferences?.getString(SharedPreferenceKey.TOKEN,"")}
 
@@ -34,7 +43,6 @@ class AllFitnessEndActivity : AppCompatActivity() {
 
         sendRecord()
 
-        initViews()
     }
 
     //기록 보내기
@@ -59,19 +67,19 @@ class AllFitnessEndActivity : AppCompatActivity() {
         var lunge_count:Int = 0
 
         when(fitnesstype){
-            "pushups_down" ->{
+            PUSHUP_DOWN ->{
                 push_up_set = sharedPreferences.getInt(FITNESS_SET,0)
                 push_up_count = sharedPreferences.getInt(FITNESS_COUNT,0)
             }
-            "턱걸이"->{
+            PULLUP_DOWN ->{
                 pull_up_set = sharedPreferences.getInt(FITNESS_SET,0)
                 pull_up_count = sharedPreferences.getInt(FITNESS_COUNT,0)
             }
-            "squats_down"->{
+            SQUAT_DOWN->{
                 squat_set = sharedPreferences.getInt(FITNESS_SET,0)
                 squat_count = sharedPreferences.getInt(FITNESS_COUNT,0)
             }
-            "런지"->{
+            LUNGE_DOWN->{
                 lunge_set = sharedPreferences.getInt(FITNESS_SET,0)
                 lunge_count = sharedPreferences.getInt(FITNESS_COUNT,0)
             }
@@ -129,9 +137,4 @@ class AllFitnessEndActivity : AppCompatActivity() {
             }
     }
 
-    private fun initViews() = with(binding) {
-        AllFitnessEndBackButton.setOnClickListener {
-            finish()
-        }
-    }
 }

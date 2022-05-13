@@ -182,7 +182,7 @@ class PoseClassifierProcessor @WorkerThread constructor(
 
         if (fitnessName == SQUAT_DOWN) return "스쿼트 내려감"
         if (fitnessName == SQUAT_UP) {
-            return if(fitnessType== SQUAT) "스쿼트 올라옴" else "런지 올라옴"
+            return if(fitnessType== SQUAT_DOWN) "스쿼트 올라옴" else "런지 올라옴"
         }
 
         if (fitnessName == LUNGE_DOWN) return "런지 내려감"

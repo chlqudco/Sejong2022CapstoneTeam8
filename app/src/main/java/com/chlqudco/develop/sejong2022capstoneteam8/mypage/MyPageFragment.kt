@@ -127,6 +127,9 @@ class MyPageFragment : Fragment(R.layout.fragment_my_page) {
                                             }
                                         }
 
+                                        //데이터 초기화
+                                        adapter.dataList.clear()
+
                                         //기록이 하나라도 있는 경우
                                         if(entity.lungeCount!=0 || entity.pullUpCount!=0 || entity.pushUpCount!=0 || entity.squatCount!=0){
                                             //글자 쳐 지우기

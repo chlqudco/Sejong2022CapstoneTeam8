@@ -47,7 +47,7 @@ class RepetitionCounter @JvmOverloads constructor(
     }
 
     companion object {
-        private const val DEFAULT_ENTER_THRESHOLD = 7f
-        private const val DEFAULT_EXIT_THRESHOLD = 4f
+        private const val DEFAULT_ENTER_THRESHOLD = 8f
+        private const val DEFAULT_EXIT_THRESHOLD = 6f
     }
 }

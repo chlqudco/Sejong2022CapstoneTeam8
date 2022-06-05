@@ -170,7 +170,7 @@ class PoseClassifierProcessor @WorkerThread constructor(
         if (name==PULLUP_DOWN || name == PULLUP_UP){
             if (fitnessType == PULLUP_DOWN) return true
         }
-        if (name== LUNGE_DOWN || name == SQUAT_UP){
+        if (name== LUNGE_DOWN || name == LUNGE_UP){
             if (fitnessType == LUNGE_DOWN) return true
         }
         return false
@@ -181,9 +181,7 @@ class PoseClassifierProcessor @WorkerThread constructor(
         if (fitnessName == PUSHUP_UP) return "팔굽혀펴기 올라옴"
 
         if (fitnessName == SQUAT_DOWN) return "스쿼트 내려감"
-        if (fitnessName == SQUAT_UP) {
-            return if(fitnessType== SQUAT_DOWN) "스쿼트 올라옴" else "런지 올라옴"
-        }
+        if (fitnessName == SQUAT_UP) return "스쿼트 올라옴"
 
         if (fitnessName == LUNGE_DOWN) return "런지 내려감"
         if (fitnessName == LUNGE_UP) return "런지 올라옴"

@@ -27,7 +27,7 @@ class SharedPreferenceKey {
         const val SQUAT_DOWN = "squats_down"
 
         const val LUNGE = "lunge"
-        const val LUNGE_UP = "squats_up"
+        const val LUNGE_UP = "lunge_up"
         const val LUNGE_DOWN = "lunge_down"
 
     }

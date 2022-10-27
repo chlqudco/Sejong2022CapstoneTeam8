@@ -39,3 +39,12 @@
 - 교수님이 요구한 사항
   - 운동 기록 그래프 형식은 어떻니? 
   - 운동 루틴을 추천해주는 건 어떻니? 
+  
+- 화면 예시
+- ![image10](https://user-images.githubusercontent.com/68932465/198191121-04e5b8dd-b85e-4680-b9f7-430f51782b90.png)
+![image05](https://user-images.githubusercontent.com/68932465/198191122-204db4b8-c22e-4786-9e09-b65c304bbd65.png)
+![image06](https://user-images.githubusercontent.com/68932465/198191124-2c5ce2f1-d803-4e90-b8b2-eb087d663829.png)
+![image07](https://user-images.githubusercontent.com/68932465/198191127-c96da8bd-eb96-4e34-998e-7756b3e690ae.png)
+![image08](https://user-images.githubusercontent.com/68932465/198191130-442fd595-4b94-43eb-80b7-41f31b79df3d.png)
+![image09](https://user-images.githubusercontent.com/68932465/198191133-affb03a8-8647-4e7c-96d0-3209760e93f8.png)
+
